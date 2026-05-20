@@ -24,36 +24,36 @@ const Inventory = () => {
         <div className="inventory-page animate-fade-in">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
                 <div>
-                    <h1 style={{ fontSize: '1.8rem', color: 'white' }}>INVENTORY & STOCK</h1>
-                    <p style={{ color: 'var(--text-dim)' }}>Manage ingredients and automated stock deduction.</p>
+                    <h1 style={{ fontSize: '1.8rem', color: 'white' }}>INVENTAR VA OMBOR</h1>
+                    <p style={{ color: 'var(--text-dim)' }}>Masalliqlarni boshqarish va omborni avtomatik ayirish.</p>
                 </div>
                 <div style={{ display: 'flex', gap: '1rem' }}>
                     <button className="glass-card" style={{ padding: '12px 20px', display: 'flex', alignItems: 'center', gap: '8px', border: '1px solid var(--primary)' }}>
                         <RefreshCcw size={18} />
-                        <span>Update Stock</span>
+                        <span>Omborni yangilash</span>
                     </button>
                     <button className="neon-btn" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <Plus size={18} />
-                        <span>Add Item</span>
+                        <span>Mahsulot qo'shish</span>
                     </button>
                 </div>
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.5rem', marginBottom: '2rem' }}>
                 <div className="glass-card" style={{ padding: '1.5rem' }}>
-                    <p style={{ color: 'var(--text-dim)', fontSize: '0.8rem', marginBottom: '8px' }}>TOTAL ITEMS</p>
+                    <p style={{ color: 'var(--text-dim)', fontSize: '0.8rem', marginBottom: '8px' }}>JAMI MAHSULOTLAR</p>
                     <h2 style={{ fontSize: '1.5rem' }}>142</h2>
                 </div>
                 <div className="glass-card" style={{ padding: '1.5rem', borderLeft: '4px solid var(--warning)' }}>
-                    <p style={{ color: 'var(--text-dim)', fontSize: '0.8rem', marginBottom: '8px' }}>LOW STOCK</p>
+                    <p style={{ color: 'var(--text-dim)', fontSize: '0.8rem', marginBottom: '8px' }}>KAM QOLGAN</p>
                     <h2 style={{ fontSize: '1.5rem', color: 'var(--warning)' }}>5</h2>
                 </div>
                 <div className="glass-card" style={{ padding: '1.5rem', borderLeft: '4px solid var(--danger)' }}>
-                    <p style={{ color: 'var(--text-dim)', fontSize: '0.8rem', marginBottom: '8px' }}>CRITICAL</p>
+                    <p style={{ color: 'var(--text-dim)', fontSize: '0.8rem', marginBottom: '8px' }}>TANQIS</p>
                     <h2 style={{ fontSize: '1.5rem', color: 'var(--danger)' }}>2</h2>
                 </div>
                 <div className="glass-card" style={{ padding: '1.5rem', borderLeft: '4px solid var(--success)' }}>
-                    <p style={{ color: 'var(--text-dim)', fontSize: '0.8rem', marginBottom: '8px' }}>DELIVERIES (TODAY)</p>
+                    <p style={{ color: 'var(--text-dim)', fontSize: '0.8rem', marginBottom: '8px' }}>YETKAZIB BERISHLAR (BUGUN)</p>
                     <h2 style={{ fontSize: '1.5rem', color: 'var(--success)' }}>4</h2>
                 </div>
             </div>
@@ -62,12 +62,12 @@ const Inventory = () => {
                 <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
                     <thead>
                         <tr style={{ background: 'var(--glass)', color: 'var(--text-dim)', fontSize: '0.85rem' }}>
-                            <th style={{ padding: '1.2rem' }}>INGREDIENT / ITEM</th>
-                            <th style={{ padding: '1.2rem' }}>CURRENT STOCK</th>
-                            <th style={{ padding: '1.2rem' }}>MIN. LEVEL</th>
-                            <th style={{ padding: '1.2rem' }}>STATUS</th>
-                            <th style={{ padding: '1.2rem' }}>AUTO-DEDUCT</th>
-                            <th style={{ padding: '1.2rem' }}>ACTION</th>
+                            <th style={{ padding: '1.2rem' }}>MASALLIQ / MAHSULOT</th>
+                            <th style={{ padding: '1.2rem' }}>JORIY MIQDOR</th>
+                            <th style={{ padding: '1.2rem' }}>MIN. DARAJA</th>
+                            <th style={{ padding: '1.2rem' }}>HOLAT</th>
+                            <th style={{ padding: '1.2rem' }}>AVTOMATIK AYIRISH</th>
+                            <th style={{ padding: '1.2rem' }}>HARAKAT</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -96,12 +96,12 @@ const Inventory = () => {
                                         <div style={{ width: '32px', height: '18px', background: 'var(--primary)', borderRadius: '10px', position: 'relative' }}>
                                             <div style={{ position: 'absolute', right: '2px', top: '2px', width: '14px', height: '14px', background: 'white', borderRadius: '50%' }}></div>
                                         </div>
-                                        <span style={{ fontSize: '0.8rem' }}>Active</span>
+                                        <span style={{ fontSize: '0.8rem' }}>Faol</span>
                                     </div>
                                 </td>
                                 <td style={{ padding: '1.2rem' }}>
                                     <button style={{ background: 'transparent', border: '1px solid var(--border)', padding: '6px 12px', borderRadius: '6px', color: 'white', cursor: 'pointer' }}>
-                                        Orders
+                                        Buyurtmalar
                                     </button>
                                 </td>
                             </tr>

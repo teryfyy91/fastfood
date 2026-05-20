@@ -18,7 +18,7 @@ const PlaceholderPage = ({ title }) => (
     <h1 style={{ fontSize: '1.8rem', color: 'white', marginBottom: '1rem' }}>{title}</h1>
     <div className="glass-card" style={{ padding: '3rem', textAlign: 'center' }}>
       <p style={{ color: 'var(--text-dim)', fontSize: '1.1rem' }}>
-        The <span className="neon-text">{title}</span> module is being initialized...
+        <span className="neon-text">{title}</span> moduli ishga tushirilmoqda...
       </p>
       <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center' }}>
         <div className="neon-border" style={{ width: '40px', height: '40px', borderRadius: '50%', borderTopColor: 'transparent', animation: 'spin 1s linear infinite' }}></div>
@@ -43,12 +43,12 @@ function App() {
             <Route path="/kitchen" element={<Kitchen />} />
             <Route path="/queue" element={<Queue />} />
             <Route path="/qr-menu" element={<QRMenu />} />
-            <Route path="/delivery" element={<PlaceholderPage title="DELIVERY TRACKING" />} />
+            <Route path="/delivery" element={<PlaceholderPage title="YETKAZIB BERISHNI KUZATISH" />} />
             <Route path="/inventory" element={<Inventory />} />
             <Route path="/employees" element={<Employees />} />
-            <Route path="/customers" element={<PlaceholderPage title="CUSTOMER DATABASE" />} />
+            <Route path="/customers" element={<PlaceholderPage title="MIJOZLAR BAZASI" />} />
             <Route path="/analytics" element={<Analytics />} />
-            <Route path="/settings" element={<PlaceholderPage title="SYSTEM SETTINGS" />} />
+            <Route path="/settings" element={<PlaceholderPage title="TIZIM SOZLAMALARI" />} />
           </Routes>
         </main>
       </div>
