@@ -1,16 +1,34 @@
-# React + Vite
+# FastFood Ekotizimi
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Ushbu loyiha fast-fud biznesi uchun premium va zamonaviy SaaS platformasi hisoblanadi.
 
-Currently, two official plugins are available:
+## Xususiyatlar
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Boshqaruv paneli**: Umumiy statistikalar va tushumlar tahlili.
+- **Buyurtmalar**: Yangi buyurtmalar berish va savatchani boshqarish.
+- **Oshxona tizimi (KDS)**: Buyurtmalarni real vaqt rejimida tayyorlash.
+- **Navbat boshqaruvi**: Mijozlar uchun navbat holati boardi.
+- **QR Menyu**: Stollar uchun raqamli menyu.
+- **Xodimlar**: Lavozimlar va ruxsatnomalarni boshqarish.
+- **Inventar**: Masalliqlarni va ombor qoldiqlarini kuzatish.
+- **Analitika**: Biznes samaradorligini chuqur tahlil qilish.
 
-## React Compiler
+## Texnologiyalar
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React
+- Vite
+- Lucide React (ikonkalar uchun)
+- Recharts (grafiklar uchun)
+- Framer Motion (animatsiyalar uchun)
 
-## Expanding the ESLint configuration
+## Ishga tushirish
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. Bog'liqliklarni o'rnating:
+   ```bash
+   npm install
+   ```
+
+2. Dev serverni ishga tushiring:
+   ```bash
+   npm run dev
+   ```
