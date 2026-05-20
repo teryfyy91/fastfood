@@ -1,72 +1,110 @@
 import React from 'react';
-import { Search, Bell, User, Plus } from 'lucide-react';
+import { NavLink } from 'react-router-dom';
+import {
+    Search,
+    Bell,
+    Heart,
+    ShoppingCart,
+    LayoutDashboard,
+    UtensilsCrossed,
+    Clock,
+    Settings,
+    Utensils
+} from 'lucide-react';
 
 const Topbar = () => {
+    const navItems = [
+        { icon: <LayoutDashboard size={18} />, label: 'Boshqaruv', path: '/' },
+        { icon: <UtensilsCrossed size={18} />, label: 'Mahsulotlar', path: '/orders' },
+        { icon: <Clock size={18} />, label: 'Buyurtmalarim', path: '/queue' },
+        { icon: <Heart size={18} />, label: 'Tanlanganlar', path: '/wishlist' },
+        { icon: <ShoppingCart size={18} />, label: 'Savatcha', path: '/cart' },
+        { icon: <Settings size={18} />, label: 'Sozlamalar', path: '/settings' },
+    ];
+
     return (
-        <header className="topbar">
-            <div className="search-container" style={{ position: 'relative', width: '400px' }}>
-                <Search
-                    style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-dim)' }}
-                    size={18}
-                />
-                <input
-                    type="text"
-                    placeholder="Buyurtmalar, mijozlar yoki hisobotlarni qidirish..."
-                    style={{
-                        width: '100%',
-                        padding: '12px 12px 12px 48px',
-                        background: 'var(--glass)',
-                        border: '1px solid var(--glass-border)',
-                        borderRadius: '12px',
-                        color: 'white',
-                        outline: 'none',
-                        fontSize: '0.9rem'
-                    }}
-                />
-            </div>
-
-            <div className="topbar-actions" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-                <button className="neon-btn" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 20px' }}>
-                    <Plus size={18} />
-                    <span>Yangi buyurtma</span>
-                </button>
-
-                <div style={{ position: 'relative', cursor: 'pointer' }}>
-                    <div style={{
-                        position: 'absolute',
-                        top: '-2px',
-                        right: '-2px',
-                        width: '8px',
-                        height: '8px',
-                        background: 'var(--danger)',
-                        borderRadius: '50%',
-                        border: '2px solid var(--bg-dark)'
-                    }}></div>
-                    <Bell color="var(--text-dim)" size={22} />
-                </div>
-
+        <header className="top-nav" style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 'var(--topbar-height)',
+            background: 'var(--bg-card)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            padding: '0 4rem',
+            zIndex: 1000,
+            boxShadow: '0 2px 20px rgba(0,0,0,0.03)',
+            borderRadius: '0 0 30px 30px'
+        }}>
+            {/* Logo */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <div style={{
+                    width: '40px',
+                    height: '40px',
+                    background: 'var(--primary)',
+                    borderRadius: '50%',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '12px',
-                    padding: '4px 4px 4px 16px',
-                    borderLeft: '1px solid var(--border)'
+                    justifyContent: 'center',
+                    boxShadow: '0 4px 15px var(--primary-glow)'
                 }}>
-                    <div style={{ textAlign: 'right' }}>
-                        <p style={{ fontSize: '0.9rem', fontWeight: '600' }}>Alex Rivera</p>
-                        <p style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>Boshqaruvchi</p>
-                    </div>
+                    <Utensils size={22} color="var(--accent)" />
+                </div>
+                <h1 style={{ fontSize: '1.5rem', fontWeight: '800', letterSpacing: '-1px' }}>
+                    Dish<span style={{ color: 'var(--text-dim)' }}>Dash</span>
+                </h1>
+            </div>
+
+            {/* Navigation */}
+            <nav style={{ display: 'flex', gap: '8px' }}>
+                {navItems.map((item) => (
+                    <NavLink
+                        key={item.label}
+                        to={item.path}
+                        style={({ isActive }) => ({
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            padding: '10px 20px',
+                            borderRadius: '30px',
+                            textDecoration: 'none',
+                            color: isActive ? 'var(--text-main)' : 'var(--text-dim)',
+                            fontSize: '0.9rem',
+                            fontWeight: isActive ? '700' : '500',
+                            background: isActive ? 'var(--bg-body)' : 'transparent',
+                            transition: '0.3s'
+                        })}
+                    >
+                        {item.icon}
+                        <span>{item.label}</span>
+                    </NavLink>
+                ))}
+            </nav>
+
+            {/* Actions */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+                <div style={{ background: 'var(--bg-body)', padding: '10px', borderRadius: '50%', cursor: 'pointer' }}>
+                    <Bell size={20} color="var(--text-main)" />
+                </div>
+                <div style={{ background: 'var(--bg-body)', padding: '10px', borderRadius: '50%', cursor: 'pointer' }}>
+                    <Heart size={20} color="var(--text-main)" />
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', paddingLeft: '15px' }}>
                     <div style={{
-                        width: '40px',
-                        height: '40px',
-                        borderRadius: '12px',
-                        background: 'linear-gradient(135deg, var(--primary), var(--accent))',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontWeight: 'bold'
+                        width: '45px',
+                        height: '45px',
+                        borderRadius: '50%',
+                        overflow: 'hidden',
+                        border: '2px solid var(--primary)'
                     }}>
-                        AR
+                        <img
+                            src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=100&q=80"
+                            alt="User"
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        />
                     </div>
                 </div>
             </div>

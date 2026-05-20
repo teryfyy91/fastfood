@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Sidebar from './components/Sidebar';
 import Topbar from './components/Topbar';
 import DashboardOverview from './pages/DashboardOverview';
 import Orders from './pages/Orders';
@@ -15,13 +14,20 @@ import './App.css';
 // Placeholder Pages
 const PlaceholderPage = ({ title }) => (
   <div className="animate-fade-in">
-    <h1 style={{ fontSize: '1.8rem', color: 'white', marginBottom: '1rem' }}>{title}</h1>
-    <div className="glass-card" style={{ padding: '3rem', textAlign: 'center' }}>
-      <p style={{ color: 'var(--text-dim)', fontSize: '1.1rem' }}>
-        <span className="neon-text">{title}</span> moduli ishga tushirilmoqda...
+    <h1 style={{ fontSize: '1.8rem', color: 'var(--text-main)', marginBottom: '1.5rem' }}>{title}</h1>
+    <div className="glass-card" style={{ padding: '4rem', textAlign: 'center', borderStyle: 'dashed' }}>
+      <p style={{ color: 'var(--text-dim)', fontSize: '1.1rem', fontWeight: '500' }}>
+        <span style={{ color: 'var(--accent)', fontWeight: '700' }}>{title}</span> moduli ishga tushirilmoqda...
       </p>
       <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center' }}>
-        <div className="neon-border" style={{ width: '40px', height: '40px', borderRadius: '50%', borderTopColor: 'transparent', animation: 'spin 1s linear infinite' }}></div>
+        <div style={{
+          width: '45px',
+          height: '45px',
+          borderRadius: '50%',
+          border: '4px solid var(--border)',
+          borderTopColor: 'var(--primary)',
+          animation: 'spin 1s linear infinite'
+        }}></div>
       </div>
     </div>
     <style>{`
@@ -34,22 +40,23 @@ function App() {
   return (
     <Router>
       <div className="app-container">
-        <Sidebar />
         <main className="main-content">
           <Topbar />
-          <Routes>
-            <Route path="/" element={<DashboardOverview />} />
-            <Route path="/orders" element={<Orders />} />
-            <Route path="/kitchen" element={<Kitchen />} />
-            <Route path="/queue" element={<Queue />} />
-            <Route path="/qr-menu" element={<QRMenu />} />
-            <Route path="/delivery" element={<PlaceholderPage title="YETKAZIB BERISHNI KUZATISH" />} />
-            <Route path="/inventory" element={<Inventory />} />
-            <Route path="/employees" element={<Employees />} />
-            <Route path="/customers" element={<PlaceholderPage title="MIJOZLAR BAZASI" />} />
-            <Route path="/analytics" element={<Analytics />} />
-            <Route path="/settings" element={<PlaceholderPage title="TIZIM SOZLAMALARI" />} />
-          </Routes>
+          <div style={{ padding: '0 2.5rem' }}>
+            <Routes>
+              <Route path="/" element={<DashboardOverview />} />
+              <Route path="/orders" element={<Orders />} />
+              <Route path="/kitchen" element={<Kitchen />} />
+              <Route path="/queue" element={<Queue />} />
+              <Route path="/qr-menu" element={<QRMenu />} />
+              <Route path="/delivery" element={<PlaceholderPage title="YETKAZIB BERISHNI KUZATISH" />} />
+              <Route path="/inventory" element={<Inventory />} />
+              <Route path="/employees" element={<Employees />} />
+              <Route path="/customers" element={<PlaceholderPage title="MIJOZLAR BAZASI" />} />
+              <Route path="/analytics" element={<Analytics />} />
+              <Route path="/settings" element={<PlaceholderPage title="TIZIM SOZLAMALARI" />} />
+            </Routes>
+          </div>
         </main>
       </div>
     </Router>
