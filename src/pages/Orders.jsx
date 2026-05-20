@@ -12,25 +12,25 @@ import {
 } from 'lucide-react';
 
 const PRODUCTS = [
-    { id: 1, name: 'Neon Burger', category: 'Burgers', price: 12.99, image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&q=80' },
-    { id: 2, name: 'Cyber Hotdog', category: 'Hotdogs', price: 8.50, image: 'https://images.unsplash.com/photo-1541232390620-adeaae62e9c7?w=400&q=80' },
-    { id: 3, name: 'Turbo Fries', category: 'Sides', price: 4.99, image: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=400&q=80' },
-    { id: 4, name: 'Quantum Pizza', category: 'Pizza', price: 18.20, image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&q=80' },
-    { id: 5, name: 'Fusion Taco', category: 'Mexican', price: 6.50, image: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=400&q=80' },
-    { id: 6, name: 'Plasma Soda', category: 'Drinks', price: 3.50, image: 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=400&q=80' },
-    { id: 7, name: 'Giga Shake', category: 'Drinks', price: 7.99, image: 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=400&q=80' },
-    { id: 8, name: 'Stealth Wings', category: 'Sides', price: 11.50, image: 'https://images.unsplash.com/photo-1567620832903-9fc6debc209f?w=400&q=80' },
+    { id: 1, name: 'Neon Burger', category: 'Burgerlar', price: 12.99, image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&q=80' },
+    { id: 2, name: 'Cyber Hotdog', category: 'Xot-doglar', price: 8.50, image: 'https://images.unsplash.com/photo-1541232390620-adeaae62e9c7?w=400&q=80' },
+    { id: 3, name: 'Turbo Fries', category: 'Qo\'shimchalar', price: 4.99, image: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=400&q=80' },
+    { id: 4, name: 'Quantum Pizza', category: 'Pitsa', price: 18.20, image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&q=80' },
+    { id: 5, name: 'Fusion Taco', category: 'Meksikan', price: 6.50, image: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=400&q=80' },
+    { id: 6, name: 'Plasma Soda', category: 'Ichimliklar', price: 3.50, image: 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=400&q=80' },
+    { id: 7, name: 'Giga Shake', category: 'Ichimliklar', price: 7.99, image: 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=400&q=80' },
+    { id: 8, name: 'Stealth Wings', category: 'Qo\'shimchalar', price: 11.50, image: 'https://images.unsplash.com/photo-1567620832903-9fc6debc209f?w=400&q=80' },
 ];
 
 const CATEGORIES = ['Hammasi', 'Burgerlar', 'Xot-doglar', 'Pitsa', 'Qo\'shimchalar', 'Ichimliklar', 'Meksikan'];
 
 const Orders = () => {
-    const [activeCategory, setActiveCategory] = useState('All');
+    const [activeCategory, setActiveCategory] = useState('Hammasi');
     const [cart, setCart] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
 
     const filteredProducts = PRODUCTS.filter(p =>
-        (activeCategory === 'All' || p.category === activeCategory) &&
+        (activeCategory === 'Hammasi' || p.category === activeCategory) &&
         p.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 

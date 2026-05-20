@@ -54,7 +54,7 @@ const Topbar = () => {
                 }}>
                     <div style={{ textAlign: 'right' }}>
                         <p style={{ fontSize: '0.9rem', fontWeight: '600' }}>Alex Rivera</p>
-                        <p style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>Administrator</p>
+                        <p style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>Boshqaruvchi</p>
                     </div>
                     <div style={{
                         width: '40px',
