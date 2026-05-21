@@ -7,9 +7,9 @@ import {
     UtensilsCrossed,
     Clock,
     Settings,
-    Utensils,
     ChefHat,
-    Warehouse
+    Warehouse,
+    Flame
 } from 'lucide-react';
 
 const Topbar = () => {
@@ -39,21 +39,29 @@ const Topbar = () => {
             borderRadius: '0 0 30px 30px'
         }}>
             {/* Logo */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                 <div style={{
                     width: '40px',
                     height: '40px',
                     background: 'var(--primary)',
-                    borderRadius: '50%',
+                    borderRadius: '12px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     boxShadow: '0 4px 15px var(--primary-glow)'
                 }}>
-                    <Utensils size={22} color="var(--accent)" />
+                    <Flame size={22} color="var(--accent)" fill="var(--accent)" />
                 </div>
-                <h1 style={{ fontSize: '1.5rem', fontWeight: '800', letterSpacing: '-1px' }}>
-                    Dish<span style={{ color: 'var(--text-dim)' }}>Dash</span>
+                <h1 style={{ 
+                    fontSize: '1.4rem', 
+                    fontWeight: '900', 
+                    letterSpacing: '1px',
+                    textTransform: 'uppercase',
+                    background: 'linear-gradient(to right, #000, var(--text-dim))',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent'
+                }}>
+                    Fast<span style={{ color: 'var(--primary)', WebkitTextFillColor: 'initial' }}>Food</span>
                 </h1>
             </div>
 
