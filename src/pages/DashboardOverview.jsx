@@ -22,6 +22,7 @@ import {
     Tooltip,
     ResponsiveContainer
 } from 'recharts';
+import { useNavigate } from 'react-router-dom';
 
 const SALES_DATA = [];
 
@@ -56,6 +57,7 @@ const StatCard = ({ title, value, change, isUp, icon: Icon, color }) => (
 );
 
 const DashboardOverview = () => {
+    const navigate = useNavigate();
     return (
         <div className="dashboard-container" style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
             {/* Hero Section */}
@@ -66,7 +68,11 @@ const DashboardOverview = () => {
                     </h1>
                     <p style={{ color: 'var(--text-dim)', fontWeight: '500' }}>Hot-dog va Lavash SaaS platformangizning bugungi ko'rsatkichlari.</p>
                 </div>
-                <button className="neon-btn" style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '15px 25px' }}>
+                <button
+                    onClick={() => navigate('/new-order')}
+                    className="neon-btn"
+                    style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '15px 25px' }}
+                >
                     <Plus size={20} /> Yangi Buyurtma
                 </button>
             </div>

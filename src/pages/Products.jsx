@@ -29,6 +29,7 @@ const Products = () => {
     const [activeTab, setActiveTab] = useState('all');
     const [products, setProducts] = useState(INITIAL_PRODUCTS);
     const [searchQuery, setSearchQuery] = useState('');
+    const [showAddModal, setShowAddModal] = useState(false);
 
     const toggleStatus = (id) => {
         setProducts(prev => prev.map(p => p.id === id ? { ...p, status: !p.status } : p));
@@ -98,11 +99,54 @@ const Products = () => {
                         <button className="glass-card" style={{ padding: '12px 20px', display: 'flex', alignItems: 'center', gap: '8px', border: '1px solid var(--border)' }}>
                             <Filter size={18} /> Filtr
                         </button>
-                        <button className="neon-btn" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <button
+                            onClick={() => setShowAddModal(true)}
+                            className="neon-btn"
+                            style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+                        >
                             <Plus size={20} /> Mahsulot qo'shish
                         </button>
                     </div>
                 </div>
+
+                <AnimatePresence>
+                    {showAddModal && (
+                        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(8px)', zIndex: 3000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.9 }}
+                                className="glass-card"
+                                style={{ width: '100%', maxWidth: '500px', padding: '2rem', background: 'white' }}
+                            >
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+                                    <h2 style={{ fontSize: '1.5rem' }}>Yangi mahsulot</h2>
+                                    <button onClick={() => setShowAddModal(false)} style={{ background: 'var(--bg-body)', border: 'none', padding: '10px', borderRadius: '12px', cursor: 'pointer' }}>
+                                        <X size={20} />
+                                    </button>
+                                </div>
+
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                                    <div>
+                                        <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', marginBottom: '8px' }}>Mahsulot nomi</label>
+                                        <input type="text" placeholder="Masalan: Katta Lavash" style={{ width: '100%', padding: '12px', borderRadius: '12px', border: '1px solid var(--border)', outline: 'none' }} />
+                                    </div>
+                                    <div>
+                                        <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', marginBottom: '8px' }}>Narxi (so'm)</label>
+                                        <input type="number" placeholder="35000" style={{ width: '100%', padding: '12px', borderRadius: '12px', border: '1px solid var(--border)', outline: 'none' }} />
+                                    </div>
+                                    <div>
+                                        <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', marginBottom: '8px' }}>Kategoriya</label>
+                                        <select style={{ width: '100%', padding: '12px', borderRadius: '12px', border: '1px solid var(--border)', outline: 'none' }}>
+                                            {CATEGORIES.slice(1).map(cat => <option key={cat.id} value={cat.id}>{cat.label}</option>)}
+                                        </select>
+                                    </div>
+                                    <button onClick={() => setShowAddModal(false)} className="neon-btn" style={{ width: '100%', padding: '15px', marginTop: '1rem' }}>Saqlash</button>
+                                </div>
+                            </motion.div>
+                        </div>
+                    )}
+                </AnimatePresence>
 
                 {/* Grid */}
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.5rem' }}>

@@ -5,6 +5,7 @@ import DashboardOverview from './pages/DashboardOverview';
 import Products from './pages/Products';
 import Orders from './pages/Orders';
 import OrdersBoard from './pages/OrdersBoard';
+import OrderEntry from './pages/OrderEntry';
 import Queue from './pages/Queue';
 import QueueMonitor from './pages/QueueMonitor';
 import Kitchen from './pages/Kitchen';
@@ -36,6 +37,7 @@ const AppContent = () => {
             <Route path="/products" element={<Products />} />
             <Route path="/orders" element={<Orders />} />
             <Route path="/orders-board" element={<OrdersBoard />} />
+            <Route path="/new-order" element={<OrderEntry />} />
             <Route path="/kitchen" element={<Kitchen />} />
             <Route path="/queue" element={<Queue />} />
             <Route path="/queue-monitor" element={<QueueMonitor />} />
@@ -52,6 +54,7 @@ const AppContent = () => {
     </div>
   );
 };
+
 
 function App() {
   return (
