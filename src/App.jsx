@@ -9,6 +9,7 @@ import Analytics from './pages/Analytics';
 import Employees from './pages/Employees';
 import Queue from './pages/Queue';
 import QRMenu from './pages/QRMenu';
+import Settings from './pages/Settings';
 import './App.css';
 
 // Placeholder Pages
@@ -54,7 +55,7 @@ function App() {
               <Route path="/employees" element={<Employees />} />
               <Route path="/customers" element={<PlaceholderPage title="MIJOZLAR BAZASI" />} />
               <Route path="/analytics" element={<Analytics />} />
-              <Route path="/settings" element={<PlaceholderPage title="TIZIM SOZLAMALARI" />} />
+              <Route path="/settings" element={<Settings />} />
             </Routes>
           </div>
         </main>

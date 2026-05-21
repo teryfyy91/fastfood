@@ -97,19 +97,37 @@ const Topbar = () => {
                     <Bell size={20} color="var(--text-main)" />
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', paddingLeft: '15px' }}>
-                    <div style={{
-                        width: '45px',
-                        height: '45px',
-                        borderRadius: '50%',
-                        overflow: 'hidden',
-                        border: '2px solid var(--primary)'
-                    }}>
-                        <img
-                            src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=100&q=80"
-                            alt="User"
-                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                        />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                    <div style={{ position: 'relative' }}>
+                        <div style={{
+                            width: '45px',
+                            height: '45px',
+                            borderRadius: '15px',
+                            overflow: 'hidden',
+                            border: '2px solid var(--primary)',
+                            cursor: 'pointer'
+                        }}>
+                            <img
+                                src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=100&q=80"
+                                alt="User"
+                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                            />
+                        </div>
+                        <div style={{
+                            position: 'absolute',
+                            bottom: '-2px',
+                            right: '-2px',
+                            width: '14px',
+                            height: '14px',
+                            background: 'var(--success)',
+                            borderRadius: '50%',
+                            border: '3px solid var(--bg-card)',
+                            boxShadow: '0 0 10px rgba(16, 185, 129, 0.4)'
+                        }}></div>
+                    </div>
+                    <div style={{ display: 'none', flexDirection: 'column' }} className="d-xl-flex">
+                        <span style={{ fontSize: '0.85rem', fontWeight: '800' }}>Admin</span>
+                        <span style={{ fontSize: '0.7rem', color: 'var(--text-dim)' }}>Online</span>
                     </div>
                 </div>
             </div>
