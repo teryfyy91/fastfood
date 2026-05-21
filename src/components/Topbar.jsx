@@ -23,20 +23,22 @@ const Topbar = () => {
     ];
 
     return (
-        <header className="top-nav" style={{
+        <header className="topbar" style={{
             position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            height: 'var(--topbar-height)',
-            background: 'var(--bg-card)',
+            top: '15px',
+            left: '20px',
+            right: '20px',
+            height: '80px',
+            background: 'rgba(255, 255, 255, 0.95)',
+            backdropFilter: 'blur(10px)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            padding: '0 4rem',
+            padding: '0 2.5rem',
             zIndex: 1000,
-            boxShadow: '0 2px 20px rgba(0,0,0,0.03)',
-            borderRadius: '0 0 30px 30px'
+            boxShadow: '0 10px 40px rgba(0,0,0,0.06)',
+            borderRadius: '25px',
+            border: '1px solid rgba(255,255,255,0.3)'
         }}>
             {/* Logo */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -93,41 +95,59 @@ const Topbar = () => {
 
             {/* Actions */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-                <div style={{ background: 'var(--bg-body)', padding: '10px', borderRadius: '50%', cursor: 'pointer' }}>
-                    <Bell size={20} color="var(--text-main)" />
+                <div style={{ position: 'relative' }}>
+                    <div style={{ 
+                        background: 'rgba(0,0,0,0.03)', 
+                        padding: '12px', 
+                        borderRadius: '50%', 
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        transition: '0.3s'
+                    }} className="action-btn">
+                        <Bell size={20} color="var(--text-main)" />
+                    </div>
+                    <div style={{
+                        position: 'absolute',
+                        top: '10px',
+                        right: '10px',
+                        width: '8px',
+                        height: '8px',
+                        background: 'var(--danger)',
+                        borderRadius: '50%',
+                        border: '2px solid white'
+                    }}></div>
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '15px', paddingLeft: '10px' }}>
                     <div style={{ position: 'relative' }}>
                         <div style={{
-                            width: '45px',
-                            height: '45px',
-                            borderRadius: '15px',
+                            width: '48px',
+                            height: '48px',
+                            borderRadius: '50%',
                             overflow: 'hidden',
                             border: '2px solid var(--primary)',
+                            padding: '2px',
+                            background: 'white',
                             cursor: 'pointer'
                         }}>
                             <img
                                 src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=100&q=80"
                                 alt="User"
-                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }}
                             />
                         </div>
                         <div style={{
                             position: 'absolute',
-                            bottom: '-2px',
-                            right: '-2px',
-                            width: '14px',
-                            height: '14px',
+                            bottom: '2px',
+                            right: '2px',
+                            width: '12px',
+                            height: '12px',
                             background: 'var(--success)',
                             borderRadius: '50%',
-                            border: '3px solid var(--bg-card)',
-                            boxShadow: '0 0 10px rgba(16, 185, 129, 0.4)'
+                            border: '2px solid white'
                         }}></div>
-                    </div>
-                    <div style={{ display: 'none', flexDirection: 'column' }} className="d-xl-flex">
-                        <span style={{ fontSize: '0.85rem', fontWeight: '800' }}>Admin</span>
-                        <span style={{ fontSize: '0.7rem', color: 'var(--text-dim)' }}>Online</span>
                     </div>
                 </div>
             </div>

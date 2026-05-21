@@ -155,3 +155,7 @@ h4,
 .animate-fade-in {
   animation: fadeIn 0.5s ease forwards;
 }
+.action-btn:hover {
+  background: rgba(0, 0, 0, 0.08) !important;
+  transform: scale(1.05);
+}
