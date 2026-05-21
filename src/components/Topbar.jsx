@@ -15,8 +15,8 @@ import {
 const Topbar = () => {
     const navItems = [
         { icon: <LayoutDashboard size={18} />, label: 'Boshqaruv', path: '/' },
-        { icon: <UtensilsCrossed size={18} />, label: 'Mahsulotlar', path: '/orders' },
-        { icon: <Clock size={18} />, label: 'Buyurtmalarim', path: '/queue' },
+        { icon: <UtensilsCrossed size={18} />, label: 'Buyurtmalar', path: '/orders' },
+        { icon: <Clock size={18} />, label: 'Navbat', path: '/queue' },
         { icon: <ChefHat size={18} />, label: 'Tayyorlanmoqda', path: '/kitchen' },
         { icon: <Warehouse size={18} />, label: 'Ombor', path: '/inventory' },
         { icon: <Settings size={18} />, label: 'Sozlamalar', path: '/settings' },
