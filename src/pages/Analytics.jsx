@@ -16,22 +16,9 @@ import {
 } from 'recharts';
 import { Download, Calendar, TrendingUp, Users, ShoppingBag, Clock } from 'lucide-react';
 
-const REVENUE_DATA = [
-    { name: 'Du', revenue: 4500, orders: 120 },
-    { name: 'Se', revenue: 5200, orders: 145 },
-    { name: 'Cho', revenue: 4800, orders: 132 },
-    { name: 'Pa', revenue: 6100, orders: 168 },
-    { name: 'Ju', revenue: 8900, orders: 240 },
-    { name: 'Sha', revenue: 12400, orders: 310 },
-    { name: 'Yak', revenue: 10200, orders: 280 },
-];
+const REVENUE_DATA = [];
 
-const CATEGORY_DATA = [
-    { name: 'Burgerlar', value: 45 },
-    { name: 'Qo\'shimchalar', value: 25 },
-    { name: 'Ichimliklar', value: 20 },
-    { name: 'Boshqalar', value: 10 },
-];
+const CATEGORY_DATA = [];
 
 const COLORS = ['#bc13fe', '#00f2ff', '#10b981', '#f59e0b'];
 
@@ -57,10 +44,10 @@ const Analytics = () => {
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.5rem', marginBottom: '2rem' }}>
                 {[
-                    { label: 'Haftalik tushum', value: '$52,100', change: '+14%', icon: <TrendingUp size={20} />, color: 'var(--primary)' },
-                    { label: 'O\'rtacha buyurtma', value: '$34.20', change: '+5%', icon: <ShoppingBag size={20} />, color: 'var(--accent)' },
-                    { label: 'Mijozlar mamnuniyati', value: '4.8/5', change: '+0.2', icon: <Users size={20} />, color: 'var(--success)' },
-                    { label: 'Eng faol vaqt', value: '19:00 - 21:00', change: 'Barqaror', icon: <Clock size={20} />, color: 'var(--warning)' },
+                    { label: 'Haftalik tushum', value: '$0', change: '0%', icon: <TrendingUp size={20} />, color: 'var(--primary)' },
+                    { label: 'O\'rtacha buyurtma', value: '$0.00', change: '0%', icon: <ShoppingBag size={20} />, color: 'var(--accent)' },
+                    { label: 'Mijozlar mamnuniyati', value: '0.0/5', change: '0', icon: <Users size={20} />, color: 'var(--success)' },
+                    { label: 'Eng faol vaqt', value: '-', change: 'Noma\'lum', icon: <Clock size={20} />, color: 'var(--warning)' },
                 ].map((stat, i) => (
                     <div key={i} className="glass-card" style={{ padding: '1.5rem' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>

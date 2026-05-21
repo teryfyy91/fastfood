@@ -12,26 +12,13 @@ import {
     Star
 } from 'lucide-react';
 
-const PRODUCTS = [
-    { id: 1, name: 'Neon Burger', category: 'Burgerlar', price: 12.99, image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&q=80' },
-    { id: 2, name: 'Cyber Hotdog', category: 'Xot-doglar', price: 8.50, image: 'https://images.unsplash.com/photo-1541232390620-adeaae62e9c7?w=400&q=80' },
-    { id: 3, name: 'Turbo Fries', category: 'Qo\'shimchalar', price: 4.99, image: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=400&q=80' },
-    { id: 4, name: 'Quantum Pizza', category: 'Pitsa', price: 18.20, image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&q=80' },
-    { id: 5, name: 'Fusion Taco', category: 'Meksikan', price: 6.50, image: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=400&q=80' },
-    { id: 6, name: 'Plasma Soda', category: 'Ichimliklar', price: 3.50, image: 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=400&q=80' },
-    { id: 7, name: 'Giga Shake', category: 'Ichimliklar', price: 7.99, image: 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=400&q=80' },
-    { id: 8, name: 'Stealth Wings', category: 'Qo\'shimchalar', price: 11.50, image: 'https://images.unsplash.com/photo-1567620832903-9fc6debc209f?w=400&q=80' },
-];
+const PRODUCTS = [];
 
 const CATEGORIES = ['Hammasi', 'Pitsa', 'Burgerlar', 'Pasta', 'Biryani', 'Salatlar', 'Ichimliklar', 'Desertlar', 'Guruch'];
 
 const Orders = () => {
     const [activeCategory, setActiveCategory] = useState('Hammasi');
-    const [cart, setCart] = useState([
-        { id: 101, name: 'BBQ Pizza', price: 120.00, quantity: 2, image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=200&q=80' },
-        { id: 102, name: 'Biryani', price: 100.00, quantity: 2, image: 'https://images.unsplash.com/photo-1563379091339-03b21bc4a4f8?w=200&q=80' },
-        { id: 103, name: 'Pasta', price: 30.00, quantity: 2, image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=200&q=80' },
-    ]);
+    const [cart, setCart] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
 
     const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
@@ -103,92 +90,23 @@ const Orders = () => {
                 {/* Featured Product Card */}
                 <div className="glass-card" style={{
                     padding: '2.5rem',
-                    display: 'grid',
-                    gridTemplateColumns: '1.2fr 1fr',
-                    gap: '2rem',
-                    position: 'relative',
-                    overflow: 'hidden'
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '1rem',
+                    minHeight: '400px',
+                    color: 'var(--text-dim)'
                 }}>
-                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                        <div style={{ position: 'relative', width: '300px', height: '300px' }}>
-                            <div style={{
-                                position: 'absolute',
-                                top: '-20px',
-                                left: '-20px',
-                                width: '100%',
-                                height: '100%',
-                                background: 'var(--primary)',
-                                borderRadius: '50%',
-                                opacity: 0.1,
-                                filter: 'blur(40px)'
-                            }}></div>
-                            <img
-                                src="https://images.unsplash.com/photo-1563379091339-03b21bc4a4f8?w=500&q=80"
-                                alt="Pasta"
-                                style={{ width: '100%', height: '100%', objectFit: 'contain', position: 'relative', zIndex: 2 }}
-                            />
-                        </div>
-                    </div>
-
-                    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
-                            <span style={{ color: 'var(--text-dim)', fontWeight: '600' }}>Vaqt</span>
-                            <span style={{ padding: '4px 12px', background: 'var(--bg-body)', borderRadius: '20px', fontSize: '0.8rem', fontWeight: '700' }}>20 daqiqa</span>
-                        </div>
-                        <h2 style={{ fontSize: '2.5rem', fontWeight: '900', marginBottom: '0.5rem', lineHeight: 1.1 }}>Creamy Pasta</h2>
-                        <p style={{ color: 'var(--text-dim)', marginBottom: '1.5rem', fontSize: '1rem' }}>Yangi ko'katlar va parmezan pishlog'i bilan tayyorlangan qaymoqli pasta.</p>
-
-                        <div style={{ marginBottom: '1.5rem' }}>
-                            <p style={{ fontWeight: '700', marginBottom: '0.8rem', fontSize: '0.9rem' }}>O'lcham</p>
-                            <div style={{ display: 'flex', gap: '10px' }}>
-                                {['500g', '750g', '1000g'].map(size => (
-                                    <button key={size} style={{
-                                        padding: '8px 16px',
-                                        borderRadius: '10px',
-                                        border: 'none',
-                                        background: size === '500g' ? '#000' : 'var(--bg-body)',
-                                        color: size === '500g' ? '#fff' : 'var(--text-main)',
-                                        fontWeight: '700'
-                                    }}>
-                                        {size}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-
-                        <div style={{ marginBottom: '2rem' }}>
-                            <p style={{ fontWeight: '700', marginBottom: '0.8rem', fontSize: '0.9rem' }}>Qo'shimchalar</p>
-                            <div style={{ display: 'flex', gap: '15px' }}>
-                                {['Pomidor', 'Ko\'kat', 'Pishloq'].map((extra, i) => (
-                                    <div key={extra} style={{ textAlign: 'center' }}>
-                                        <div style={{ width: '45px', height: '45px', background: 'var(--bg-body)', borderRadius: '12px', marginBottom: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                            <Star size={18} fill={i === 0 ? "gold" : "none"} color={i === 0 ? "gold" : "var(--text-dim)"} />
-                                        </div>
-                                        <p style={{ fontSize: '0.7rem', fontWeight: '600', color: 'var(--text-dim)' }}>{extra}</p>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <div>
-                                <p style={{ fontSize: '0.8rem', fontWeight: '600', color: 'var(--text-dim)' }}>Umumiy miqdor</p>
-                                <p style={{ fontSize: '1.5rem', fontWeight: '900' }}>$30.00</p>
-                            </div>
-                            <button className="neon-btn">Savatchaga qo'shish</button>
-                        </div>
-                    </div>
+                    <ShoppingBag size={64} opacity={0.2} />
+                    <p style={{ fontWeight: '600' }}>Mahsulot tanlanmagan</p>
                 </div>
 
                 {/* Recommended Section */}
                 <div>
                     <h3 style={{ fontSize: '1.2rem', fontWeight: '800', marginBottom: '1rem' }}>Tavsiya etiladi</h3>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem' }}>
-                        {[
-                            { name: 'BBQ Pizza', price: 80, image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=300&q=80' },
-                            { name: 'Noodles', price: 25, image: 'https://images.unsplash.com/photo-1563379091339-03b21bc4a4f8?w=300&q=80' },
-                            { name: 'Red Pasta', price: 28, image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=300&q=80' },
-                        ].map((item, i) => (
+                        {[].map((item, i) => (
                             <div key={i} className="glass-card" style={{ padding: '1rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
                                 <div style={{ width: '60px', height: '60px', borderRadius: '50%', overflow: 'hidden' }}>
                                     <img src={item.image} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />

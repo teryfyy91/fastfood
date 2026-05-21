@@ -11,15 +11,7 @@ import {
     Check
 } from 'lucide-react';
 
-const INITIAL_INVENTORY = [
-    { id: 1, item: 'Beef Patties', stock: 120, min: 50, unit: 'pcs', status: 'In Stock' },
-    { id: 2, item: 'Burger Buns', stock: 45, min: 50, unit: 'pcs', status: 'Low Stock' },
-    { id: 3, item: 'Potatoes', stock: 200, min: 100, unit: 'kg', status: 'In Stock' },
-    { id: 4, item: 'Cooking Oil', stock: 15, min: 20, unit: 'L', status: 'Low Stock' },
-    { id: 5, item: 'Secret Sauce', stock: 8, min: 5, unit: 'L', status: 'In Stock' },
-    { id: 6, item: 'Tomato', stock: 12, min: 10, unit: 'kg', status: 'In Stock' },
-    { id: 7, item: 'Cheese Slices', stock: 30, min: 100, unit: 'pcs', status: 'Critical' },
-];
+const INITIAL_INVENTORY = [];
 
 const Inventory = () => {
     const [items, setItems] = useState(INITIAL_INVENTORY);
@@ -53,7 +45,7 @@ const Inventory = () => {
         <div className="inventory-page animate-fade-in" style={{ position: 'relative' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
                 <div>
-                    <h1 style={{ fontSize: '1.8rem', color: 'white' }}>INVENTAR VA OMBOR</h1>
+                    <h1 style={{ fontSize: '1.8rem' }}>INVENTAR VA OMBOR</h1>
                     <p style={{ color: 'var(--text-dim)' }}>Masalliqlarni boshqarish va omborni avtomatik ayirish.</p>
                 </div>
                 <div style={{ display: 'flex', gap: '1rem' }}>
@@ -99,7 +91,7 @@ const Inventory = () => {
                 </div>
                 <div className="glass-card" style={{ padding: '1.5rem', borderLeft: '4px solid var(--success)' }}>
                     <p style={{ color: 'var(--text-dim)', fontSize: '0.8rem', marginBottom: '8px' }}>YETKAZIB BERISHLAR (BUGUN)</p>
-                    <h2 style={{ fontSize: '1.5rem', color: 'var(--success)' }}>4</h2>
+                    <h2 style={{ fontSize: '1.5rem', color: 'var(--success)' }}>0</h2>
                 </div>
             </div>
 
@@ -107,7 +99,7 @@ const Inventory = () => {
                 <div style={{ overflowX: 'auto' }}>
                     <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
                         <thead>
-                            <tr style={{ background: 'var(--glass)', color: 'var(--text-dim)', fontSize: '0.85rem' }}>
+                            <tr style={{ background: 'rgba(255,255,255,0.02)', color: 'var(--text-dim)', fontSize: '0.85rem' }}>
                                 <th style={{ padding: '1.2rem' }}>MASALLIQ / MAHSULOT</th>
                                 <th style={{ padding: '1.2rem' }}>JORIY MIQDOR</th>
                                 <th style={{ padding: '1.2rem' }}>MIN. DARAJA</th>
@@ -118,18 +110,18 @@ const Inventory = () => {
                         </thead>
                         <tbody>
                             <AnimatePresence initial={false}>
-                                {items.map((item) => (
+                                {items.length > 0 ? items.map((item) => (
                                     <motion.tr
                                         key={item.id}
                                         layout
                                         initial={{ opacity: 0, x: -20 }}
                                         animate={{ opacity: 1, x: 0 }}
                                         exit={{ opacity: 0, scale: 0.95 }}
-                                        style={{ borderBottom: '1px solid var(--glass-border)', transition: '0.3s' }}
+                                        style={{ borderBottom: '1px solid var(--border)', transition: '0.3s' }}
                                         className="table-row-hover"
                                     >
                                         <td style={{ padding: '1.2rem', display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                            <div style={{ padding: '8px', background: 'var(--glass)', borderRadius: '8px' }}><Package size={18} /></div>
+                                            <div style={{ padding: '8px', background: 'var(--bg-body)', borderRadius: '8px' }}><Package size={18} /></div>
                                             <span style={{ fontWeight: '600' }}>{item.item}</span>
                                         </td>
                                         <td style={{ padding: '1.2rem' }}>{item.stock} {item.unit}</td>
@@ -163,7 +155,13 @@ const Inventory = () => {
                                             </button>
                                         </td>
                                     </motion.tr>
-                                ))}
+                                )) : (
+                                    <tr>
+                                        <td colSpan="6" style={{ padding: '4rem', textAlign: 'center', color: 'var(--text-dim)' }}>
+                                            Ombor bo'sh. Mahsulot qo'shing.
+                                        </td>
+                                    </tr>
+                                )}
                             </AnimatePresence>
                         </tbody>
                     </table>
@@ -179,8 +177,8 @@ const Inventory = () => {
                         left: 0,
                         right: 0,
                         bottom: 0,
-                        background: 'rgba(0,0,0,0.8)',
-                        backdropFilter: 'blur(10px)',
+                        background: 'rgba(0,0,0,0.5)',
+                        backdropFilter: 'blur(8px)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -192,20 +190,19 @@ const Inventory = () => {
                             animate={{ scale: 1, opacity: 1 }}
                             exit={{ scale: 0.9, opacity: 0 }}
                             style={{
-                                background: 'var(--bg-card)',
+                                background: 'white',
                                 width: '100%',
                                 maxWidth: '500px',
                                 borderRadius: '24px',
                                 padding: '2rem',
-                                border: '1px solid var(--glass-border)',
-                                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
+                                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.2)'
                             }}
                         >
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
                                 <h2 style={{ fontSize: '1.5rem', fontWeight: '800' }}>Yangi mahsulot qo'shish</h2>
                                 <button
                                     onClick={() => setShowAddModal(false)}
-                                    style={{ background: 'var(--glass)', border: 'none', borderRadius: '50%', padding: '8px', cursor: 'pointer' }}
+                                    style={{ background: 'var(--bg-body)', border: 'none', borderRadius: '50%', padding: '8px', cursor: 'pointer' }}
                                 >
                                     <X size={20} />
                                 </button>
@@ -220,7 +217,7 @@ const Inventory = () => {
                                         placeholder="Masalan: Go'sht, Non..."
                                         value={newItem.item}
                                         onChange={e => setNewItem({ ...newItem, item: e.target.value })}
-                                        style={{ width: '100%', background: 'var(--bg-body)', border: '1px solid var(--border)', borderRadius: '12px', padding: '12px 16px', color: 'white', outline: 'none' }}
+                                        style={{ width: '100%', background: 'var(--bg-body)', border: '1px solid var(--border)', borderRadius: '12px', padding: '12px 16px', outline: 'none' }}
                                     />
                                 </div>
 
@@ -233,7 +230,7 @@ const Inventory = () => {
                                             placeholder="0"
                                             value={newItem.stock}
                                             onChange={e => setNewItem({ ...newItem, stock: e.target.value })}
-                                            style={{ width: '100%', background: 'var(--bg-body)', border: '1px solid var(--border)', borderRadius: '12px', padding: '12px 16px', color: 'white', outline: 'none' }}
+                                            style={{ width: '100%', background: 'var(--bg-body)', border: '1px solid var(--border)', borderRadius: '12px', padding: '12px 16px', outline: 'none' }}
                                         />
                                     </div>
                                     <div>
@@ -244,7 +241,7 @@ const Inventory = () => {
                                             placeholder="0"
                                             value={newItem.min}
                                             onChange={e => setNewItem({ ...newItem, min: e.target.value })}
-                                            style={{ width: '100%', background: 'var(--bg-body)', border: '1px solid var(--border)', borderRadius: '12px', padding: '12px 16px', color: 'white', outline: 'none' }}
+                                            style={{ width: '100%', background: 'var(--bg-body)', border: '1px solid var(--border)', borderRadius: '12px', padding: '12px 16px', outline: 'none' }}
                                         />
                                     </div>
                                 </div>
@@ -254,7 +251,7 @@ const Inventory = () => {
                                     <select
                                         value={newItem.unit}
                                         onChange={e => setNewItem({ ...newItem, unit: e.target.value })}
-                                        style={{ width: '100%', background: 'var(--bg-body)', border: '1px solid var(--border)', borderRadius: '12px', padding: '12px 16px', color: 'white', outline: 'none' }}
+                                        style={{ width: '100%', background: 'var(--bg-body)', border: '1px solid var(--border)', borderRadius: '12px', padding: '12px 16px', outline: 'none' }}
                                     >
                                         <option value="pcs">Dona (pcs)</option>
                                         <option value="kg">Kilogram (kg)</option>
@@ -278,7 +275,7 @@ const Inventory = () => {
 
             <style>{`
                 .table-row-hover:hover {
-                    background: rgba(255, 255, 255, 0.02);
+                    background: rgba(0, 0, 0, 0.01);
                 }
                 .animate-spin {
                     animation: spin 1s linear infinite;

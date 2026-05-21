@@ -10,14 +10,7 @@ import {
     X
 } from 'lucide-react';
 
-const EMPLOYEES = [
-    { id: 1, name: 'Alex Rivera', role: 'Admin', status: 'Active', shift: 'Morning', email: 'alex@fastfood.sys' },
-    { id: 2, name: 'Sarah Chen', role: 'Kitchen', status: 'Active', shift: 'Morning', email: 'sarah.c@fastfood.sys' },
-    { id: 3, name: 'Marco Rossi', role: 'Cashier', status: 'Active', shift: 'Evening', email: 'marco.r@fastfood.sys' },
-    { id: 4, name: 'Elena Vance', role: 'Manager', status: 'Active', shift: 'Morning', email: 'elena.v@fastfood.sys' },
-    { id: 5, name: 'David Smith', role: 'Courier', status: 'Offline', shift: 'Evening', email: 'david.s@fastfood.sys' },
-    { id: 6, name: 'Jasmine Lee', role: 'Kitchen', status: 'Active', shift: 'Evening', email: 'jasmine.l@fastfood.sys' },
-];
+const EMPLOYEES = [];
 
 const Employees = () => {
     return (
@@ -37,7 +30,7 @@ const Employees = () => {
                 <div className="glass-card" style={{ padding: '1.5rem' }}>
                     <h4 style={{ fontSize: '0.8rem', color: 'var(--text-dim)', marginBottom: '1rem' }}>ISHDA BO'LGAN XODIMLAR</h4>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                        <div style={{ fontSize: '2rem', fontWeight: 'bold' }}>12</div>
+                        <div style={{ fontSize: '2rem', fontWeight: 'bold' }}>0</div>
                         <div style={{ flex: 1, height: '6px', background: 'var(--glass)', borderRadius: '3px' }}>
                             <div style={{ width: '80%', height: '100%', background: 'var(--success)', borderRadius: '3px' }}></div>
                         </div>
@@ -46,16 +39,16 @@ const Employees = () => {
                 <div className="glass-card" style={{ padding: '1.5rem' }}>
                     <h4 style={{ fontSize: '0.8rem', color: 'var(--text-dim)', marginBottom: '1rem' }}>FAOL SMENALAR</h4>
                     <div style={{ display: 'flex', gap: '8px' }}>
-                        <span style={{ padding: '4px 12px', background: 'var(--primary)', borderRadius: '12px', fontSize: '0.75rem' }}>Ertalabki: 8</span>
-                        <span style={{ padding: '4px 12px', background: 'var(--glass)', borderRadius: '12px', fontSize: '0.75rem' }}>Kechki: 4</span>
+                        <span style={{ padding: '4px 12px', background: 'var(--primary)', borderRadius: '12px', fontSize: '0.75rem' }}>Ertalabki: 0</span>
+                        <span style={{ padding: '4px 12px', background: 'var(--glass)', borderRadius: '12px', fontSize: '0.75rem' }}>Kechki: 0</span>
                     </div>
                 </div>
                 <div className="glass-card" style={{ padding: '1.5rem' }}>
                     <h4 style={{ fontSize: '0.8rem', color: 'var(--text-dim)', marginBottom: '1rem' }}>LAVOZIMLAR</h4>
                     <div style={{ display: 'flex', gap: '8px' }}>
-                        <span style={{ color: 'var(--primary)', fontSize: '0.75rem' }}>4 Admin</span>
-                        <span style={{ color: 'var(--accent)', fontSize: '0.75rem' }}>12 Oshpaz</span>
-                        <span style={{ color: 'var(--success)', fontSize: '0.75rem' }}>8 Kuryer</span>
+                        <span style={{ color: 'var(--primary)', fontSize: '0.75rem' }}>0 Admin</span>
+                        <span style={{ color: 'var(--accent)', fontSize: '0.75rem' }}>0 Oshpaz</span>
+                        <span style={{ color: 'var(--success)', fontSize: '0.75rem' }}>0 Kuryer</span>
                     </div>
                 </div>
             </div>

@@ -9,13 +9,7 @@ import {
     Bell
 } from 'lucide-react';
 
-const INITIAL_ORDERS = [
-    { id: '#4512', items: ['2x Neon Burger', '1x Turbo Fries'], status: 'new', time: '2:15', priority: true },
-    { id: '#4511', items: ['1x Quantum Pizza', '2x Plasma Soda'], status: 'preparing', time: '8:40', priority: false },
-    { id: '#4510', items: ['3x Fusion Taco'], status: 'preparing', time: '12:20', priority: false },
-    { id: '#4509', items: ['1x Cyber Hotdog', '1x Turbo Fries'], status: 'ready', time: '15:30', priority: false },
-    { id: '#4513', items: ['1x Neon Burger'], status: 'new', time: '0:45', priority: false },
-];
+const INITIAL_ORDERS = [];
 
 const Kitchen = () => {
     const [orders, setOrders] = useState(INITIAL_ORDERS);
@@ -56,7 +50,7 @@ const Kitchen = () => {
                     <div className="glass-card" style={{ padding: '10px 20px', display: 'flex', alignItems: 'center', gap: '12px' }}>
                         <div style={{ textAlign: 'right' }}>
                             <p style={{ fontSize: '0.7rem', color: 'var(--text-dim)' }}>O'RT. TAYYORLANISH VAQTI</p>
-                            <p style={{ fontSize: '1rem', fontWeight: 'bold', color: 'var(--success)' }}>12:45</p>
+                            <p style={{ fontSize: '1rem', fontWeight: 'bold', color: 'var(--success)' }}>00:00</p>
                         </div>
                         <TimerIcon color="var(--success)" />
                     </div>

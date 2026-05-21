@@ -9,13 +9,7 @@ import {
     Monitor
 } from 'lucide-react';
 
-const QUEUE_DATA = [
-    { id: '101', name: 'J. Smith', status: 'Waiting', time: '12 min', items: 3 },
-    { id: '102', name: 'A. Miller', status: 'Preparing', time: '8 min', items: 1 },
-    { id: '103', name: 'M. Garcia', status: 'Ready', time: '2 min', items: 5 },
-    { id: '104', name: 'K. Wilson', status: 'Waiting', time: '15 min', items: 2 },
-    { id: '105', name: 'R. Taylor', status: 'Preparing', time: '5 min', items: 4 },
-];
+const QUEUE_DATA = [];
 
 const Queue = () => {
     return (
@@ -42,7 +36,7 @@ const Queue = () => {
                 <div className="glass-card" style={{ padding: '2rem', background: 'var(--bg-sidebar)', border: '2px solid var(--primary)' }}>
                     <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
                         <h2 style={{ fontSize: '1.5rem', color: 'var(--primary)', marginBottom: '8px' }}>HOZIR XIZMAT KO'RSATILMOQDA</h2>
-                        <div style={{ fontSize: '5rem', fontWeight: 'bold', fontFamily: 'var(--font-display)', textShadow: '0 0 20px var(--primary-glow)' }}>103</div>
+                        <div style={{ fontSize: '5rem', fontWeight: 'bold', fontFamily: 'var(--font-display)', textShadow: '0 0 20px var(--primary-glow)' }}>-</div>
                         <p style={{ color: 'var(--text-dim)' }}>Iltimos, 1-oynaga murojaat qiling</p>
                     </div>
 
@@ -50,7 +44,7 @@ const Queue = () => {
                         <div>
                             <h3 style={{ fontSize: '0.9rem', color: 'var(--warning)', marginBottom: '1rem', textAlign: 'center' }}>TAYYORLANMOQDA</h3>
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', justifyContent: 'center' }}>
-                                {['102', '105', '106'].map(num => (
+                                {[].map(num => (
                                     <div key={num} style={{ fontSize: '1.5rem', fontWeight: 'bold', padding: '10px 20px', background: 'var(--glass)', borderRadius: '8px' }}>{num}</div>
                                 ))}
                             </div>
@@ -58,7 +52,7 @@ const Queue = () => {
                         <div>
                             <h3 style={{ fontSize: '0.9rem', color: 'var(--success)', marginBottom: '1rem', textAlign: 'center' }}>TAYYOR</h3>
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', justifyContent: 'center' }}>
-                                {['103', '101'].map(num => (
+                                {[].map(num => (
                                     <div key={num} style={{ fontSize: '1.5rem', fontWeight: 'bold', padding: '10px 20px', background: 'rgba(16, 185, 129, 0.2)', borderRadius: '8px', color: 'var(--success)', border: '1px solid var(--success)' }}>{num}</div>
                                 ))}
                             </div>

@@ -50,14 +50,14 @@ const QRMenu = () => {
                         </div>
 
                         <div style={{ marginBottom: '1.5rem' }}>
-                            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&q=80"
-                                style={{ width: '100%', height: '140px', objectFit: 'cover', borderRadius: '16px', marginBottom: '1rem' }}
-                            />
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                <h3 style={{ fontSize: '1rem' }}>Neon Burger</h3>
-                                <span className="neon-text">$12.99</span>
+                            <div style={{ width: '100%', height: '140px', background: 'var(--glass)', borderRadius: '16px', marginBottom: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                <ShoppingBag size={30} color="var(--text-dim)" />
                             </div>
-                            <p style={{ fontSize: '0.7rem', color: 'var(--text-dim)', marginTop: '4px' }}>Double beef patty with nitro-cheese and plasma-bacon.</p>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <h3 style={{ fontSize: '1rem' }}>-</h3>
+                                <span className="neon-text">$0.00</span>
+                            </div>
+                            <p style={{ fontSize: '0.7rem', color: 'var(--text-dim)', marginTop: '4px' }}>Mahsulot tavsifi bu yerda ko'rinadi.</p>
                         </div>
 
                         <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', marginBottom: '1.5rem' }}>
@@ -72,15 +72,8 @@ const QRMenu = () => {
                             ))}
                         </div>
 
-                        <div className="glass-card" style={{ padding: '10px', marginBottom: '1rem', display: 'flex', gap: '10px', alignItems: 'center' }}>
-                            <img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=400&q=80" style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '8px' }} />
-                            <div style={{ flex: 1 }}>
-                                <p style={{ fontSize: '0.8rem', fontWeight: '600' }}>Turbo Fries</p>
-                                <div style={{ display: 'flex', gap: '2px' }}>
-                                    {[1, 2, 3, 4, 5].map(s => <Star key={s} size={8} fill="var(--warning)" color="var(--warning)" />)}
-                                </div>
-                            </div>
-                            <div style={{ background: 'var(--primary)', padding: '4px', borderRadius: '6px' }}><ShoppingBag size={14} /></div>
+                        <div className="glass-card" style={{ padding: '10px', marginBottom: '1rem', display: 'flex', justifyContent: 'center', color: 'var(--text-dim)', fontSize: '0.8rem' }}>
+                            Ro'yxat bo'sh
                         </div>
                     </div>
 
@@ -98,8 +91,8 @@ const QRMenu = () => {
                             justifyContent: 'space-between',
                             alignItems: 'center'
                         }}>
-                            <span>Savatchani ko'rish (2)</span>
-                            <span>$17.98</span>
+                            <span>Savatchani ko'rish (0)</span>
+                            <span>$0.00</span>
                         </button>
                     </div>
                 </div>
