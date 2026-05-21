@@ -3,13 +3,13 @@ import { NavLink } from 'react-router-dom';
 import {
     Search,
     Bell,
-    Heart,
-    ShoppingCart,
     LayoutDashboard,
     UtensilsCrossed,
     Clock,
     Settings,
-    Utensils
+    Utensils,
+    ChefHat,
+    Warehouse
 } from 'lucide-react';
 
 const Topbar = () => {
@@ -17,8 +17,8 @@ const Topbar = () => {
         { icon: <LayoutDashboard size={18} />, label: 'Boshqaruv', path: '/' },
         { icon: <UtensilsCrossed size={18} />, label: 'Mahsulotlar', path: '/orders' },
         { icon: <Clock size={18} />, label: 'Buyurtmalarim', path: '/queue' },
-        { icon: <Heart size={18} />, label: 'Tanlanganlar', path: '/wishlist' },
-        { icon: <ShoppingCart size={18} />, label: 'Savatcha', path: '/cart' },
+        { icon: <ChefHat size={18} />, label: 'Tayyorlanmoqda', path: '/kitchen' },
+        { icon: <Warehouse size={18} />, label: 'Ombor', path: '/inventory' },
         { icon: <Settings size={18} />, label: 'Sozlamalar', path: '/settings' },
     ];
 
@@ -87,9 +87,6 @@ const Topbar = () => {
             <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
                 <div style={{ background: 'var(--bg-body)', padding: '10px', borderRadius: '50%', cursor: 'pointer' }}>
                     <Bell size={20} color="var(--text-main)" />
-                </div>
-                <div style={{ background: 'var(--bg-body)', padding: '10px', borderRadius: '50%', cursor: 'pointer' }}>
-                    <Heart size={20} color="var(--text-main)" />
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', paddingLeft: '15px' }}>
