@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Package,
@@ -14,7 +14,14 @@ import {
 const INITIAL_INVENTORY = [];
 
 const Inventory = () => {
-    const [items, setItems] = useState(INITIAL_INVENTORY);
+    const [items, setItems] = useState(() => {
+        const saved = localStorage.getItem('fastfood_inventory');
+        return saved ? JSON.parse(saved) : INITIAL_INVENTORY;
+    });
+
+    useEffect(() => {
+        localStorage.setItem('fastfood_inventory', JSON.stringify(items));
+    }, [items]);
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [showAddModal, setShowAddModal] = useState(false);
     const [newItem, setNewItem] = useState({ item: '', stock: '', min: '', unit: 'pcs' });
