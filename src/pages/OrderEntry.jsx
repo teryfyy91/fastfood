@@ -78,6 +78,7 @@ const OrderEntry = () => {
 
         const existingOrders = JSON.parse(localStorage.getItem('fastfood_orders') || '[]');
         localStorage.setItem('fastfood_orders', JSON.stringify([newOrder, ...existingOrders]));
+        window.dispatchEvent(new Event('ordersUpdated'));
 
         setOrderConfirmed(true);
         setCart([]);

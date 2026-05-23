@@ -83,6 +83,7 @@ const OrdersBoard = () => {
         const updated = orders.map(o => o.id === id ? { ...o, status: newStatus } : o);
         setOrders(updated);
         localStorage.setItem('fastfood_orders', JSON.stringify(updated));
+        window.dispatchEvent(new Event('ordersUpdated'));
         if (selectedOrder && selectedOrder.id === id) {
             setSelectedOrder({ ...selectedOrder, status: newStatus });
         }

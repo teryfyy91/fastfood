@@ -118,8 +118,14 @@ const DashboardOverview = () => {
 
     useEffect(() => {
         loadStats();
-        const interval = setInterval(loadStats, 5000);
-        return () => clearInterval(interval);
+        // Same-tab real-time (OrderEntry, OrdersBoard dispatch this)
+        window.addEventListener('ordersUpdated', loadStats);
+        // Cross-tab real-time (another browser tab changes localStorage)
+        window.addEventListener('storage', loadStats);
+        return () => {
+            window.removeEventListener('ordersUpdated', loadStats);
+            window.removeEventListener('storage', loadStats);
+        };
     }, []);
 
     const fmt = (n) => n >= 1000000
@@ -264,7 +270,8 @@ const DashboardOverview = () => {
 // ── Top Products component ──────────────────────────────────────────────────
 const TopProducts = () => {
     const [items, setItems] = useState([]);
-    useEffect(() => {
+
+    const load = () => {
         const orders = JSON.parse(localStorage.getItem('fastfood_orders') || '[]');
         const map = {};
         orders.forEach(o => {
@@ -279,6 +286,16 @@ const TopProducts = () => {
             .slice(0, 6)
             .map(([name, qty]) => ({ name, qty }));
         setItems(sorted);
+    };
+
+    useEffect(() => {
+        load();
+        window.addEventListener('ordersUpdated', load);
+        window.addEventListener('storage', load);
+        return () => {
+            window.removeEventListener('ordersUpdated', load);
+            window.removeEventListener('storage', load);
+        };
     }, []);
 
     if (items.length === 0) return (
@@ -310,9 +327,20 @@ const TopProducts = () => {
 // ── Recent Activity component ───────────────────────────────────────────────
 const RecentActivity = () => {
     const [orders, setOrders] = useState([]);
-    useEffect(() => {
+
+    const load = () => {
         const all = JSON.parse(localStorage.getItem('fastfood_orders') || '[]');
         setOrders(all.slice(0, 8));
+    };
+
+    useEffect(() => {
+        load();
+        window.addEventListener('ordersUpdated', load);
+        window.addEventListener('storage', load);
+        return () => {
+            window.removeEventListener('ordersUpdated', load);
+            window.removeEventListener('storage', load);
+        };
     }, []);
 
     const statusInfo = {
@@ -349,9 +377,20 @@ const RecentActivity = () => {
 // ── Recent Orders component ─────────────────────────────────────────────────
 const RecentOrders = () => {
     const [orders, setOrders] = useState([]);
-    useEffect(() => {
+
+    const load = () => {
         const all = JSON.parse(localStorage.getItem('fastfood_orders') || '[]');
         setOrders(all.slice(0, 5));
+    };
+
+    useEffect(() => {
+        load();
+        window.addEventListener('ordersUpdated', load);
+        window.addEventListener('storage', load);
+        return () => {
+            window.removeEventListener('ordersUpdated', load);
+            window.removeEventListener('storage', load);
+        };
     }, []);
 
     if (orders.length === 0) return (
