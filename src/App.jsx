@@ -14,6 +14,7 @@ import Analytics from './pages/Analytics';
 import Employees from './pages/Employees';
 import QRMenu from './pages/QRMenu';
 import Settings from './pages/Settings';
+import Recipes from './pages/Recipes';
 import './App.css';
 
 const PlaceholderPage = ({ title }) => (
@@ -46,6 +47,7 @@ const AppContent = () => {
             <Route path="/employees" element={<Employees />} />
             <Route path="/analytics" element={<Analytics />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/recipes" element={<Recipes />} />
             <Route path="/delivery" element={<PlaceholderPage title="YETKAZIB BERISHNI KUZATISH" />} />
             <Route path="/customers" element={<PlaceholderPage title="MIJOZLAR BAZASI" />} />
           </Routes>

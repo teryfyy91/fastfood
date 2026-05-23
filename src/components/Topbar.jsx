@@ -9,7 +9,8 @@ import {
     Settings,
     ChefHat,
     Warehouse,
-    Flame
+    Flame,
+    BookOpen
 } from 'lucide-react';
 
 const Topbar = () => {
@@ -18,6 +19,7 @@ const Topbar = () => {
         { icon: <UtensilsCrossed size={18} />, label: 'Mahsulotlar', path: '/products' },
         { icon: <Clock size={18} />, label: 'Navbat', path: '/queue-monitor' },
         { icon: <ChefHat size={18} />, label: 'Tayyorlanmoqda', path: '/kitchen' },
+        { icon: <BookOpen size={18} />, label: 'Tayyorlash', path: '/recipes' },
         { icon: <Warehouse size={18} />, label: 'Ombor', path: '/inventory' },
         { icon: <Settings size={18} />, label: 'Sozlamalar', path: '/settings' },
     ];
