@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChefHat, Bell, CheckCircle2 } from 'lucide-react';
+import { ChefHat, Bell, CheckCircle2, X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const QueueMonitor = () => {
+    const navigate = useNavigate();
     const [orders, setOrders] = useState([]);
     const [time, setTime] = useState(new Date());
 
@@ -14,7 +16,7 @@ const QueueMonitor = () => {
         loadOrders();
         const interval = setInterval(loadOrders, 3000);
         const timer = setInterval(() => setTime(new Date()), 1000);
-        
+
         return () => {
             clearInterval(interval);
             clearInterval(timer);
@@ -58,7 +60,31 @@ const QueueMonitor = () => {
                 <h1 style={{ fontSize: '2.8rem', fontWeight: '900', letterSpacing: '-2px' }}>NEON<span style={{ color: 'var(--primary)' }}>DASH</span></h1>
             </div>
 
-            <div style={{ position: 'absolute', top: '3rem', right: '3rem', textAlign: 'right' }}>
+            <button
+                onClick={() => navigate('/')}
+                style={{
+                    position: 'absolute',
+                    top: '2rem',
+                    right: '2rem',
+                    background: 'rgba(255,255,255,0.05)',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    color: 'white',
+                    borderRadius: '15px',
+                    padding: '12px',
+                    cursor: 'pointer',
+                    zIndex: 10000,
+                    transition: '0.3s',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}
+                onMouseOver={(e) => e.target.style.background = 'rgba(239, 68, 68, 0.2)'}
+                onMouseOut={(e) => e.target.style.background = 'rgba(255,255,255,0.05)'}
+            >
+                <X size={24} />
+            </button>
+
+            <div style={{ position: 'absolute', top: '3rem', right: '3rem', textAlign: 'right', marginRight: '5rem' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '15px', justifyContent: 'flex-end' }}>
                     <h2 style={{ fontSize: '2.5rem', fontWeight: '800' }}>{formatTime(time)}</h2>
                     <div style={{ width: '10px', height: '10px', background: 'var(--primary)', borderRadius: '50%', animation: 'statusPulse 1.5s infinite' }}></div>
@@ -142,9 +168,9 @@ const QueueMonitor = () => {
                                         scale: [1, 1.05, 1],
                                     }}
                                     exit={{ opacity: 0, scale: 0.5 }}
-                                    transition={{ 
+                                    transition={{
                                         opacity: { duration: 0.5 },
-                                        scale: { repeat: Infinity, duration: 2 } 
+                                        scale: { repeat: Infinity, duration: 2 }
                                     }}
                                     style={{
                                         fontSize: '5rem',
