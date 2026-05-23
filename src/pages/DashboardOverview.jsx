@@ -214,9 +214,9 @@ const DashboardOverview = () => {
                                             <stop offset="95%" stopColor="var(--primary)" stopOpacity={0} />
                                         </linearGradient>
                                     </defs>
-                                    <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: 'var(--text-dim)', fontSize: 12 }} />
-                                    <YAxis axisLine={false} tickLine={false} tick={{ fill: 'var(--text-dim)', fontSize: 12 }} />
+                                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.04)" vertical={false} />
+                                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={false} />
+                                    <YAxis axisLine={false} tickLine={false} tick={false} width={0} />
                                     <Tooltip
                                         contentStyle={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '12px' }}
                                         formatter={(v) => [`${v.toLocaleString()} so'm`, 'Sotuv']}
