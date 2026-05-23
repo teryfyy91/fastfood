@@ -7,7 +7,9 @@ import {
     TrendingUp,
     ArrowUpRight,
     ArrowDownRight,
-    Plus
+    Plus,
+    Package,
+    AlertTriangle
 } from 'lucide-react';
 import {
     AreaChart,
@@ -212,9 +214,9 @@ const DashboardOverview = () => {
                                             <stop offset="95%" stopColor="var(--primary)" stopOpacity={0} />
                                         </linearGradient>
                                     </defs>
-                                    <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: 'var(--text-dim)', fontSize: 12 }} />
-                                    <YAxis axisLine={false} tickLine={false} tick={{ fill: 'var(--text-dim)', fontSize: 12 }} />
+                                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.04)" vertical={false} />
+                                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={false} />
+                                    <YAxis axisLine={false} tickLine={false} tick={false} width={0} />
                                     <Tooltip
                                         contentStyle={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '12px' }}
                                         formatter={(v) => [`${v.toLocaleString()} so'm`, 'Sotuv']}
@@ -252,6 +254,20 @@ const DashboardOverview = () => {
                         <RecentOrders />
                     </div>
                 </div>
+            </div>
+
+            {/* Inventory Widget — full width */}
+            <div className="glass-card" style={{ padding: '1.5rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <div style={{ padding: '8px', background: 'rgba(99,102,241,0.1)', borderRadius: '10px', color: '#6366f1' }}>
+                            <Package size={20} />
+                        </div>
+                        <h3 style={{ fontSize: '1.2rem' }}>Ombor holati</h3>
+                    </div>
+                    <button onClick={() => navigate('/inventory')} style={{ color: 'var(--primary)', background: 'none', border: 'none', fontWeight: '700', cursor: 'pointer', fontSize: '0.9rem' }}>Barchasi →</button>
+                </div>
+                <InventoryWidget />
             </div>
 
             <style>{`
@@ -325,6 +341,25 @@ const TopProducts = () => {
 };
 
 // ── Recent Activity component ───────────────────────────────────────────────
+
+// Helper: short readable order number (last 4 digits of timestamp part)
+const shortId = (id) => {
+    const part = id.split('-')[1] || id;
+    return '#' + part.slice(-4);
+};
+
+// Helper: human-readable time ago
+const timeAgo = (timestamp) => {
+    const diff = Date.now() - new Date(timestamp).getTime();
+    const mins = Math.floor(diff / 60000);
+    if (mins < 1) return 'Hozir';
+    if (mins < 60) return `${mins}m oldin`;
+    const hrs = Math.floor(mins / 60);
+    if (hrs < 24) return `${hrs}s oldin`;
+    const days = Math.floor(hrs / 24);
+    return `${days}k oldin`;
+};
+
 const RecentActivity = () => {
     const [orders, setOrders] = useState([]);
 
@@ -344,7 +379,7 @@ const RecentActivity = () => {
     }, []);
 
     const statusInfo = {
-        pending: { label: 'Yangi', color: 'var(--primary)' },
+        pending: { label: 'Yangi buyurtma', color: 'var(--primary)' },
         preparing: { label: 'Tayyorlanmoqda', color: 'var(--warning)' },
         ready: { label: 'Tayyor', color: 'var(--success)' },
         completed: { label: 'Yakunlangan', color: 'var(--text-dim)' }
@@ -358,15 +393,16 @@ const RecentActivity = () => {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
             {orders.map(o => {
                 const info = statusInfo[o.status] || statusInfo.pending;
-                const elapsed = Math.floor((Date.now() - new Date(o.timestamp).getTime()) / 60000);
                 return (
                     <div key={o.id} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                         <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: info.color, flexShrink: 0 }} />
                         <div style={{ flex: 1 }}>
-                            <p style={{ fontSize: '0.85rem', fontWeight: '700' }}>Buyurtma #{o.id.split('-')[1]}</p>
-                            <p style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>{info.label}</p>
+                            <p style={{ fontSize: '0.85rem', fontWeight: '700' }}>Buyurtma {shortId(o.id)}</p>
+                            <p style={{ fontSize: '0.75rem', color: info.color }}>{info.label}</p>
                         </div>
-                        <span style={{ fontSize: '0.75rem', color: 'var(--text-dim)', fontWeight: '600' }}>{elapsed}m oldin</span>
+                        <span style={{ fontSize: '0.75rem', color: 'var(--text-dim)', fontWeight: '600', whiteSpace: 'nowrap' }}>
+                            {timeAgo(o.timestamp)}
+                        </span>
                     </div>
                 );
             })}
@@ -397,21 +433,132 @@ const RecentOrders = () => {
         <p style={{ color: 'var(--text-dim)', fontSize: '0.9rem', textAlign: 'center' }}>Buyurtmalar yo'q</p>
     );
 
+    const statusColors = {
+        pending: '#6366f1',
+        preparing: 'var(--warning)',
+        ready: 'var(--success)',
+        completed: 'var(--text-dim)'
+    };
+    const statusLabels = {
+        pending: 'Yangi',
+        preparing: 'Tayyorlanmoqda',
+        ready: 'Tayyor',
+        completed: 'Yakunlangan'
+    };
+
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             {orders.map(o => (
                 <div key={o.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 14px', background: 'var(--bg-body)', borderRadius: '14px' }}>
                     <div>
-                        <p style={{ fontWeight: '700', fontSize: '0.9rem' }}>#{o.id.split('-')[1]}</p>
-                        <p style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>
-                            {Array.isArray(o.items) ? `${o.items.length} ta mahsulot` : '—'}
+                        <p style={{ fontWeight: '700', fontSize: '0.9rem' }}>Buyurtma {shortId(o.id)}</p>
+                        <p style={{ fontSize: '0.75rem', color: statusColors[o.status] || 'var(--text-dim)', marginTop: '2px' }}>
+                            {statusLabels[o.status] || '—'} &bull; {timeAgo(o.timestamp)}
                         </p>
                     </div>
-                    <span style={{ fontWeight: '800', color: 'var(--primary)', fontSize: '0.9rem' }}>
+                    <span style={{ fontWeight: '800', color: 'var(--primary)', fontSize: '0.9rem', whiteSpace: 'nowrap' }}>
                         {o.total?.toLocaleString()} so'm
                     </span>
                 </div>
             ))}
+        </div>
+    );
+};
+
+// ── Inventory Widget ────────────────────────────────────────────────────────
+const InventoryWidget = () => {
+    const [items, setItems] = useState([]);
+
+    const load = () => {
+        const saved = JSON.parse(localStorage.getItem('fastfood_inventory') || '[]');
+        setItems(saved);
+    };
+
+    useEffect(() => {
+        load();
+        window.addEventListener('inventoryUpdated', load);
+        window.addEventListener('storage', load);
+        return () => {
+            window.removeEventListener('inventoryUpdated', load);
+            window.removeEventListener('storage', load);
+        };
+    }, []);
+
+    if (items.length === 0) return (
+        <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-dim)' }}>
+            <Package size={36} style={{ opacity: 0.3, marginBottom: '10px' }} />
+            <p style={{ fontSize: '0.9rem' }}>Ombor bo'sh. <a href="/inventory" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: '700' }}>Mahsulot qo'shing</a></p>
+        </div>
+    );
+
+    const getColor = (item) => {
+        if (item.status === 'Critical') return { bar: '#ef4444', bg: 'rgba(239,68,68,0.08)', text: '#ef4444' };
+        if (item.status === 'Low Stock') return { bar: '#f59e0b', bg: 'rgba(245,158,11,0.08)', text: '#f59e0b' };
+        return { bar: '#10b981', bg: 'rgba(16,185,129,0.08)', text: '#10b981' };
+    };
+
+    const getLabel = (item) => {
+        if (item.status === 'Critical') return '⚠️ Tanqis';
+        if (item.status === 'Low Stock') return '⚡ Kam qoldi';
+        return '✅ Yetarli';
+    };
+
+    const maxStock = Math.max(...items.map(i => Math.max(i.stock, i.min, 1)));
+
+    return (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '12px' }}>
+            {items.map(item => {
+                const c = getColor(item);
+                const pct = Math.min(100, Math.round((item.stock / Math.max(item.min * 2, item.stock, 1)) * 100));
+                return (
+                    <div key={item.id} style={{
+                        padding: '14px 16px',
+                        background: c.bg,
+                        borderRadius: '16px',
+                        border: `1px solid ${c.bar}30`,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '10px'
+                    }}>
+                        {/* Header */}
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <div style={{ padding: '6px', background: `${c.bar}18`, borderRadius: '8px', color: c.bar }}>
+                                    <Package size={15} />
+                                </div>
+                                <span style={{ fontWeight: '700', fontSize: '0.9rem' }}>{item.item}</span>
+                            </div>
+                            <span style={{ fontSize: '0.72rem', fontWeight: '700', color: c.text, background: `${c.bar}18`, padding: '3px 8px', borderRadius: '10px' }}>
+                                {getLabel(item)}
+                            </span>
+                        </div>
+
+                        {/* Stock bar */}
+                        <div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
+                                <span style={{ fontSize: '0.78rem', color: 'var(--text-dim)', fontWeight: '600' }}>
+                                    Joriy: <strong style={{ color: c.text }}>{item.stock} {item.unit}</strong>
+                                </span>
+                                <span style={{ fontSize: '0.78rem', color: 'var(--text-dim)' }}>
+                                    Min: {item.min} {item.unit}
+                                </span>
+                            </div>
+                            <div style={{ height: '6px', background: 'rgba(0,0,0,0.06)', borderRadius: '4px', overflow: 'hidden' }}>
+                                <div style={{
+                                    height: '100%',
+                                    width: `${pct}%`,
+                                    background: c.bar,
+                                    borderRadius: '4px',
+                                    transition: 'width 0.5s ease'
+                                }} />
+                            </div>
+                            <div style={{ textAlign: 'right', fontSize: '0.72rem', color: 'var(--text-dim)', marginTop: '4px' }}>
+                                {pct}%
+                            </div>
+                        </div>
+                    </div>
+                );
+            })}
         </div>
     );
 };

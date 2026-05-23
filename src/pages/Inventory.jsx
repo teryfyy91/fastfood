@@ -21,6 +21,7 @@ const Inventory = () => {
 
     useEffect(() => {
         localStorage.setItem('fastfood_inventory', JSON.stringify(items));
+        window.dispatchEvent(new Event('inventoryUpdated'));
     }, [items]);
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [showAddModal, setShowAddModal] = useState(false);
