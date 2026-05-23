@@ -3,15 +3,31 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChefHat, Bell, CheckCircle2 } from 'lucide-react';
 
 const QueueMonitor = () => {
-    // Administrativ boshqaruv uchun bo'sh massivlar
-    const [preparing, setPreparing] = useState([]);
-    const [ready, setReady] = useState([]);
+    const [orders, setOrders] = useState([]);
     const [time, setTime] = useState(new Date());
 
     useEffect(() => {
+        const loadOrders = () => {
+            const saved = JSON.parse(localStorage.getItem('fastfood_orders') || '[]');
+            setOrders(saved);
+        };
+        loadOrders();
+        const interval = setInterval(loadOrders, 3000);
         const timer = setInterval(() => setTime(new Date()), 1000);
-        return () => clearInterval(timer);
+        
+        return () => {
+            clearInterval(interval);
+            clearInterval(timer);
+        };
     }, []);
+
+    const preparing = orders
+        .filter(o => o.status === 'pending' || o.status === 'preparing')
+        .map(o => o.id.split('-')[1].slice(-3));
+
+    const ready = orders
+        .filter(o => o.status === 'ready')
+        .map(o => o.id.split('-')[1].slice(-3));
 
     const formatTime = (date) => {
         return date.toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' });
@@ -66,7 +82,7 @@ const QueueMonitor = () => {
                     <h2 style={{ fontSize: '2.4rem', fontWeight: '900' }}>TAYYORLANMOQDA</h2>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem', flex: 1, alignItems: 'center' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem', flex: 1, alignItems: 'center', overflowY: 'auto' }}>
                     {preparing.length > 0 ? (
                         <AnimatePresence>
                             {preparing.map(num => (
@@ -74,8 +90,9 @@ const QueueMonitor = () => {
                                     key={num}
                                     initial={{ opacity: 0, scale: 0.8 }}
                                     animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0.5 }}
                                     style={{
-                                        fontSize: '6rem',
+                                        fontSize: '5rem',
                                         fontWeight: '900',
                                         padding: '1.5rem',
                                         background: 'rgba(255,255,255,0.04)',
@@ -113,7 +130,7 @@ const QueueMonitor = () => {
                     <h2 style={{ fontSize: '2.4rem', fontWeight: '900' }}>TAYYOR!</h2>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem', flex: 1, alignItems: 'center' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem', flex: 1, alignItems: 'center', overflowY: 'auto' }}>
                     {ready.length > 0 ? (
                         <AnimatePresence>
                             {ready.map(num => (
@@ -124,9 +141,13 @@ const QueueMonitor = () => {
                                         opacity: 1,
                                         scale: [1, 1.05, 1],
                                     }}
-                                    transition={{ repeat: Infinity, duration: 2 }}
+                                    exit={{ opacity: 0, scale: 0.5 }}
+                                    transition={{ 
+                                        opacity: { duration: 0.5 },
+                                        scale: { repeat: Infinity, duration: 2 } 
+                                    }}
                                     style={{
-                                        fontSize: '6rem',
+                                        fontSize: '5rem',
                                         fontWeight: '900',
                                         padding: '1.5rem',
                                         background: 'var(--primary)',
@@ -148,9 +169,6 @@ const QueueMonitor = () => {
                 </div>
             </div>
 
-            {/* Empty Footer for spacing */}
-            <div style={{ height: '2rem' }}></div>
-
             <style>{`
                 @keyframes statusPulse {
                     0% { opacity: 1; transform: scale(1); }
@@ -164,3 +182,4 @@ const QueueMonitor = () => {
 };
 
 export default QueueMonitor;
+

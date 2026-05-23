@@ -3,14 +3,10 @@ import { NavLink } from 'react-router-dom';
 import {
     Search,
     Bell,
-    Heart,
     LayoutDashboard,
     UtensilsCrossed,
     Clock,
     Settings,
-    Monitor,
-    User,
-    Utensils,
     ChefHat,
     Warehouse,
     Flame
@@ -20,9 +16,8 @@ const Topbar = () => {
     const navItems = [
         { icon: <LayoutDashboard size={18} />, label: 'Boshqaruv', path: '/' },
         { icon: <UtensilsCrossed size={18} />, label: 'Mahsulotlar', path: '/products' },
-        { icon: <Utensils size={18} />, label: 'Buyurtmalar', path: '/orders' },
-        { icon: <Monitor size={18} />, label: 'Navbat Monitori', path: '/queue-monitor' },
-        { icon: <ChefHat size={18} />, label: 'Oshxona', path: '/kitchen' },
+        { icon: <Clock size={18} />, label: 'Navbat', path: '/queue-monitor' },
+        { icon: <ChefHat size={18} />, label: 'Tayyorlanmoqda', path: '/kitchen' },
         { icon: <Warehouse size={18} />, label: 'Ombor', path: '/inventory' },
         { icon: <Settings size={18} />, label: 'Sozlamalar', path: '/settings' },
     ];
@@ -99,35 +94,60 @@ const Topbar = () => {
             </nav>
 
             {/* Actions */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', background: 'var(--bg-body)', padding: '5px 15px', borderRadius: '30px', border: '1px solid var(--border)' }}>
-                    <Search size={16} color="var(--text-dim)" />
-                    <input type="text" placeholder="Qidiruv..." style={{ background: 'none', border: 'none', padding: '8px', outline: 'none', fontSize: '0.85rem', width: '120px' }} />
-                </div>
-
-                <div style={{ background: 'var(--bg-body)', padding: '10px', borderRadius: '12px', cursor: 'pointer', transition: '0.3s' }} className="icon-hover">
-                    <Bell size={20} color="var(--text-main)" />
-                </div>
-
-                <div style={{ background: 'var(--bg-body)', padding: '10px', borderRadius: '12px', cursor: 'pointer', transition: '0.3s' }} className="icon-hover">
-                    <Heart size={20} color="var(--text-main)" />
-                </div>
-
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginLeft: '10px', paddingLeft: '10px', borderLeft: '1px solid var(--border)' }}>
-                    <div style={{ textAlign: 'right', display: 'none' }}>
-                        <p style={{ fontSize: '0.85rem', fontWeight: '700' }}>Admin</p>
-                    </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+                <div style={{ position: 'relative' }}>
                     <div style={{
-                        width: '40px',
-                        height: '40px',
-                        borderRadius: '12px',
-                        overflow: 'hidden',
-                        background: 'var(--primary)',
+                        background: 'rgba(0,0,0,0.03)',
+                        padding: '12px',
+                        borderRadius: '50%',
+                        cursor: 'pointer',
                         display: 'flex',
                         alignItems: 'center',
-                        justifyContent: 'center'
-                    }}>
-                        <User size={20} color="var(--accent)" />
+                        justifyContent: 'center',
+                        transition: '0.3s'
+                    }} className="action-btn">
+                        <Bell size={20} color="var(--text-main)" />
+                    </div>
+                    <div style={{
+                        position: 'absolute',
+                        top: '10px',
+                        right: '10px',
+                        width: '8px',
+                        height: '8px',
+                        background: 'var(--danger)',
+                        borderRadius: '50%',
+                        border: '2px solid white'
+                    }}></div>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '15px', paddingLeft: '10px' }}>
+                    <div style={{ position: 'relative' }}>
+                        <div style={{
+                            width: '48px',
+                            height: '48px',
+                            borderRadius: '50%',
+                            overflow: 'hidden',
+                            border: '2px solid var(--primary)',
+                            padding: '2px',
+                            background: 'white',
+                            cursor: 'pointer'
+                        }}>
+                            <img
+                                src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=100&q=80"
+                                alt="User"
+                                style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }}
+                            />
+                        </div>
+                        <div style={{
+                            position: 'absolute',
+                            bottom: '2px',
+                            right: '2px',
+                            width: '12px',
+                            height: '12px',
+                            background: 'var(--success)',
+                            borderRadius: '50%',
+                            border: '2px solid white'
+                        }}></div>
                     </div>
                 </div>
             </div>

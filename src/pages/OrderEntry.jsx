@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Search,
@@ -15,16 +15,43 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-const CATEGORIES = ['Hammasi', 'Hot Dog', 'Lavash', 'Burgerlar', 'Drinks', 'Fast Food'];
+const CATEGORIES = ['Hammasi', 'hotdog', 'lavash', 'burgerlar', 'drinks', 'fastfood'];
+const CATEGORY_LABELS = {
+    'Hammasi': 'Hammasi',
+    'hotdog': 'Hot Dog',
+    'lavash': 'Lavash',
+    'burgerlar': 'Burgerlar',
+    'drinks': 'Ichimliklar',
+    'fastfood': 'Fast Food'
+};
 
 const OrderEntry = () => {
     const navigate = useNavigate();
     const [activeCategory, setActiveCategory] = useState('Hammasi');
     const [cart, setCart] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
+    const [products, setProducts] = useState([]);
+    const [orderConfirmed, setOrderConfirmed] = useState(false);
+
+    useEffect(() => {
+        const savedProducts = localStorage.getItem('fastfood_products');
+        if (savedProducts) {
+            setProducts(JSON.parse(savedProducts));
+        }
+    }, []);
 
     const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    const total = subtotal; // Simplified for now
+    const total = subtotal;
+
+    const addToCart = (product) => {
+        setCart(prev => {
+            const existing = prev.find(item => item.id === product.id);
+            if (existing) {
+                return prev.map(item => item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item);
+            }
+            return [...prev, { ...product, quantity: 1 }];
+        });
+    };
 
     const updateQuantity = (id, delta) => {
         setCart(prev => {
@@ -37,6 +64,35 @@ const OrderEntry = () => {
             return prev;
         });
     };
+
+    const confirmOrder = () => {
+        if (cart.length === 0) return;
+
+        const newOrder = {
+            id: `ORD-${Date.now()}`,
+            items: cart,
+            total: total,
+            status: 'pending',
+            timestamp: new Date().toISOString()
+        };
+
+        const existingOrders = JSON.parse(localStorage.getItem('fastfood_orders') || '[]');
+        localStorage.setItem('fastfood_orders', JSON.stringify([newOrder, ...existingOrders]));
+
+        setOrderConfirmed(true);
+        setCart([]);
+        
+        setTimeout(() => {
+            setOrderConfirmed(false);
+            navigate('/orders-board');
+        }, 2000);
+    };
+
+    const filteredProducts = products.filter(p => {
+        const matchesCategory = activeCategory === 'Hammasi' || p.category === activeCategory;
+        const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase());
+        return matchesCategory && matchesSearch && p.status;
+    });
 
     return (
         <div className="order-entry-container" style={{
@@ -80,23 +136,52 @@ const OrderEntry = () => {
                                     transition: '0.3s'
                                 }}
                             >
-                                {cat}
+                                {CATEGORY_LABELS[cat] || cat}
                             </button>
                         ))}
                     </div>
                 </div>
 
-                {/* Empty Menu State */}
-                <div className="glass-card" style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1.5rem', borderStyle: 'dashed', background: 'rgba(255,255,255,0.02)' }}>
-                    <div style={{ padding: '30px', background: 'var(--bg-body)', borderRadius: '50%', color: 'var(--text-dim)' }}>
-                        <ShoppingBag size={60} />
+                {/* Menu Grid */}
+                {filteredProducts.length > 0 ? (
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1.5rem' }}>
+                        {filteredProducts.map(product => (
+                            <motion.div
+                                key={product.id}
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                onClick={() => addToCart(product)}
+                                className="glass-card"
+                                style={{ padding: '0', overflow: 'hidden', cursor: 'pointer' }}
+                            >
+                                <div style={{ height: '140px', width: '100%' }}>
+                                    <img src={product.img} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                </div>
+                                <div style={{ padding: '1rem' }}>
+                                    <h4 style={{ fontSize: '0.95rem', marginBottom: '5px' }}>{product.name}</h4>
+                                    <p style={{ color: 'var(--primary)', fontWeight: '800' }}>{product.price.toLocaleString()} so'm</p>
+                                </div>
+                            </motion.div>
+                        ))}
                     </div>
-                    <div style={{ textAlign: 'center' }}>
-                        <h3 style={{ fontSize: '1.4rem', marginBottom: '10px' }}>Menyu bo'sh</h3>
-                        <p style={{ color: 'var(--text-dim)', maxWidth: '300px' }}>Hozircha hech qanday mahsulot kiritilmagan. Admin paneldan mahsulot qo'shing.</p>
+                ) : (
+                    <div className="glass-card" style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1.5rem', borderStyle: 'dashed', background: 'rgba(255,255,255,0.02)' }}>
+                        <div style={{ padding: '30px', background: 'var(--bg-body)', borderRadius: '50%', color: 'var(--text-dim)' }}>
+                            <ShoppingBag size={60} />
+                        </div>
+                        <div style={{ textAlign: 'center' }}>
+                            <h3 style={{ fontSize: '1.4rem', marginBottom: '10px' }}>Menyu bo'sh</h3>
+                            <p style={{ color: 'var(--text-dim)', maxWidth: '300px' }}>
+                                {products.length === 0 
+                                    ? "Hozircha hech qanday mahsulot kiritilmagan. Admin paneldan mahsulot qo'shing."
+                                    : "Qidiruv bo'yicha mahsulot topilmadi."}
+                            </p>
+                        </div>
+                        {products.length === 0 && (
+                            <button onClick={() => navigate('/products')} className="neon-btn">Mahsulot qo'shish</button>
+                        )}
                     </div>
-                    <button onClick={() => navigate('/products')} className="neon-btn">Mahsulot qo'shish</button>
-                </div>
+                )}
             </div>
 
             {/* Cart Sidebar */}
@@ -110,15 +195,17 @@ const OrderEntry = () => {
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                             {cart.map(item => (
                                 <div key={item.id} style={{ display: 'flex', gap: '12px', alignItems: 'center', padding: '10px', background: 'var(--bg-body)', borderRadius: '16px' }}>
-                                    <div style={{ width: '50px', height: '50px', background: '#eee', borderRadius: '12px' }}></div>
+                                    <div style={{ width: '50px', height: '50px', borderRadius: '12px', overflow: 'hidden' }}>
+                                        <img src={item.img} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                    </div>
                                     <div style={{ flex: 1 }}>
                                         <h4 style={{ fontSize: '0.9rem', fontWeight: '700' }}>{item.name}</h4>
-                                        <p style={{ fontSize: '0.8rem', color: 'var(--primary)', fontWeight: '800' }}>{item.price.toLocaleString()} so'm</p>
+                                        <p style={{ fontSize: '0.8rem', color: 'var(--primary)', fontWeight: '800' }}>{(item.price * item.quantity).toLocaleString()} so'm</p>
                                     </div>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'white', padding: '4px 8px', borderRadius: '10px' }}>
-                                        <button onClick={() => updateQuantity(item.id, -1)} style={{ border: 'none', background: 'none' }}><Minus size={14} /></button>
-                                        <span style={{ fontWeight: '700', minWidth: '20px', textAlign: 'center' }}>{item.quantity}</span>
-                                        <button onClick={() => updateQuantity(item.id, 1)} style={{ border: 'none', background: 'none' }}><Plus size={14} /></button>
+                                        <button onClick={(e) => { e.stopPropagation(); updateQuantity(item.id, -1); }} style={{ border: 'none', background: 'none', cursor: 'pointer' }}><Minus size={14} /></button>
+                                        <span style={{ fontWeight: '700', minWidth: '20px', textAlign: 'center', color: 'black' }}>{item.quantity}</span>
+                                        <button onClick={(e) => { e.stopPropagation(); updateQuantity(item.id, 1); }} style={{ border: 'none', background: 'none', cursor: 'pointer' }}><Plus size={14} /></button>
                                     </div>
                                 </div>
                             ))}
@@ -137,6 +224,7 @@ const OrderEntry = () => {
                         <span style={{ fontSize: '1.2rem', fontWeight: '800' }}>{total.toLocaleString()} so'm</span>
                     </div>
                     <button
+                        onClick={confirmOrder}
                         disabled={cart.length === 0}
                         className="neon-btn"
                         style={{ width: '100%', padding: '18px', opacity: cart.length === 0 ? 0.5 : 1 }}
@@ -145,9 +233,40 @@ const OrderEntry = () => {
                     </button>
                     <p style={{ fontSize: '0.75rem', color: 'var(--text-dim)', textAlign: 'center' }}>Tasdiqlangandan so'ng buyurtma oshxonaga yuboriladi.</p>
                 </div>
+
+                {/* Order Confirmed Overlay */}
+                <AnimatePresence>
+                    {orderConfirmed && (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            style={{
+                                position: 'absolute',
+                                inset: 0,
+                                background: 'rgba(0,0,0,0.8)',
+                                backdropFilter: 'blur(10px)',
+                                borderRadius: '24px',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                zIndex: 10,
+                                color: 'white'
+                            }}
+                        >
+                            <div style={{ width: '80px', height: '80px', background: 'var(--success)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.5rem' }}>
+                                <Check size={40} />
+                            </div>
+                            <h3 style={{ fontSize: '1.5rem' }}>Muallafaqiyatli!</h3>
+                            <p style={{ opacity: 0.7 }}>Buyurtma qabul qilindi</p>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </div>
         </div>
     );
 };
 
 export default OrderEntry;
+

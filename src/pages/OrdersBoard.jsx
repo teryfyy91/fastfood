@@ -11,20 +11,20 @@ import {
     CreditCard,
     Calendar,
     Search,
-    Bell
+    Bell,
+    X
 } from 'lucide-react';
 
 const COLUMNS = [
-    { id: 'new', label: 'Yangi buyurtmalar', color: 'var(--primary)' },
+    { id: 'pending', label: 'Yangi buyurtmalar', color: 'var(--primary)' },
     { id: 'preparing', label: 'Tayyorlanmoqda', color: 'var(--warning)' },
     { id: 'ready', label: 'Tayyor', color: 'var(--success)' },
     { id: 'completed', label: 'Yakunlangan', color: 'var(--text-dim)' }
 ];
 
-const INITIAL_ORDERS = [];
-
 const OrderCard = React.forwardRef(({ order, onSelect }, ref) => {
-    const isDelayed = order.seconds > 900; // 15 mins
+    const timeElapsed = Math.floor((Date.now() - new Date(order.timestamp).getTime()) / 1000 / 60);
+    const isDelayed = timeElapsed > 15;
 
     return (
         <motion.div
@@ -43,20 +43,20 @@ const OrderCard = React.forwardRef(({ order, onSelect }, ref) => {
             }}
         >
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-                <span style={{ fontWeight: '800', color: 'var(--text-main)' }}>#{order.id}</span>
+                <span style={{ fontWeight: '800', color: 'var(--text-main)' }}>#{order.id.split('-')[1]}</span>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: isDelayed ? 'var(--danger)' : 'var(--text-dim)', fontSize: '0.8rem', fontWeight: '700' }}>
                     <Clock size={14} />
-                    <span>{Math.floor(order.seconds / 60)}m</span>
+                    <span>{timeElapsed}m</span>
                 </div>
             </div>
 
-            <h4 style={{ fontSize: '1rem', marginBottom: '5px' }}>{order.customer}</h4>
+            <h4 style={{ fontSize: '1rem', marginBottom: '5px' }}>Mijoz #{order.id.split('-')[1]}</h4>
             <p style={{ fontSize: '0.8rem', color: 'var(--text-dim)', marginBottom: '15px', lineClamp: 2, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxDirection: 'vertical', overflow: 'hidden' }}>
-                {order.items}
+                {Array.isArray(order.items) ? order.items.map(i => `${i.quantity}x ${i.name}`).join(', ') : order.items}
             </p>
 
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontWeight: '900', color: 'var(--primary)', fontSize: '0.95rem' }}>{order.amount.toLocaleString()} so'm</span>
+                <span style={{ fontWeight: '900', color: 'var(--primary)', fontSize: '0.95rem' }}>{order.total.toLocaleString()} so'm</span>
                 <div style={{ padding: '4px', borderRadius: '8px', background: 'var(--bg-body)' }}>
                     <MoreVertical size={16} color="var(--text-dim)" />
                 </div>
@@ -66,11 +66,26 @@ const OrderCard = React.forwardRef(({ order, onSelect }, ref) => {
 });
 
 const OrdersBoard = () => {
-    const [orders, setOrders] = useState(INITIAL_ORDERS);
+    const [orders, setOrders] = useState([]);
     const [selectedOrder, setSelectedOrder] = useState(null);
 
+    useEffect(() => {
+        const loadOrders = () => {
+            const saved = JSON.parse(localStorage.getItem('fastfood_orders') || '[]');
+            setOrders(saved);
+        };
+        loadOrders();
+        const interval = setInterval(loadOrders, 5000);
+        return () => clearInterval(interval);
+    }, []);
+
     const moveOrder = (id, newStatus) => {
-        setOrders(prev => prev.map(o => o.id === id ? { ...o, status: newStatus } : o));
+        const updated = orders.map(o => o.id === id ? { ...o, status: newStatus } : o);
+        setOrders(updated);
+        localStorage.setItem('fastfood_orders', JSON.stringify(updated));
+        if (selectedOrder && selectedOrder.id === id) {
+            setSelectedOrder({ ...selectedOrder, status: newStatus });
+        }
     };
 
     return (
@@ -100,6 +115,11 @@ const OrdersBoard = () => {
                                     <OrderCard key={order.id} order={order} onSelect={setSelectedOrder} />
                                 ))}
                             </AnimatePresence>
+                            {orders.filter(o => o.status === col.id).length === 0 && (
+                                <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-dim)', opacity: 0.5, fontSize: '0.85rem' }}>
+                                    Hozircha buyurtma yo'q
+                                </div>
+                            )}
                         </div>
                     </div>
                 ))}
@@ -128,7 +148,7 @@ const OrdersBoard = () => {
                         }}
                     >
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-                            <h2 style={{ fontSize: '1.5rem' }}>Buyurtma #{selectedOrder.id}</h2>
+                            <h2 style={{ fontSize: '1.5rem' }}>Buyurtma #{selectedOrder.id.split('-')[1]}</h2>
                             <button onClick={() => setSelectedOrder(null)} style={{ background: 'var(--bg-body)', border: 'none', padding: '10px', borderRadius: '12px', cursor: 'pointer' }}>
                                 <X size={20} />
                             </button>
@@ -144,18 +164,18 @@ const OrdersBoard = () => {
                                             <User size={24} color="var(--accent)" />
                                         </div>
                                         <div>
-                                            <h4 style={{ fontSize: '1.1rem' }}>{selectedOrder.customer}</h4>
-                                            <p style={{ fontSize: '0.85rem', color: 'var(--text-dim)' }}>{selectedOrder.phone}</p>
+                                            <h4 style={{ fontSize: '1.1rem' }}>Mijoz #{selectedOrder.id.split('-')[1]}</h4>
+                                            <p style={{ fontSize: '0.85rem', color: 'var(--text-dim)' }}>Tel: Aniqlanmagan</p>
                                         </div>
                                     </div>
                                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
                                         <div style={{ padding: '12px', background: 'var(--bg-body)', borderRadius: '12px' }}>
                                             <p style={{ fontSize: '0.7rem', color: 'var(--text-dim)' }}>TURI</p>
-                                            <p style={{ fontWeight: '700', fontSize: '0.9rem' }}>{selectedOrder.type}</p>
+                                            <p style={{ fontWeight: '700', fontSize: '0.9rem' }}>Restoranda</p>
                                         </div>
                                         <div style={{ padding: '12px', background: 'var(--bg-body)', borderRadius: '12px' }}>
                                             <p style={{ fontSize: '0.7rem', color: 'var(--text-dim)' }}>TO'LOV</p>
-                                            <p style={{ fontWeight: '700', fontSize: '0.9rem' }}>{selectedOrder.payment}</p>
+                                            <p style={{ fontWeight: '700', fontSize: '0.9rem' }}>Naqd/Karta</p>
                                         </div>
                                     </div>
                                 </div>
@@ -164,15 +184,16 @@ const OrdersBoard = () => {
                                 <div>
                                     <p style={{ fontSize: '0.8rem', color: 'var(--text-dim)', fontWeight: '700', marginBottom: '12px' }}>BUYURTMA TARKIBI</p>
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                                        {selectedOrder.items.split(',').map((item, i) => (
+                                        {Array.isArray(selectedOrder.items) ? selectedOrder.items.map((item, i) => (
                                             <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderBottom: '1px solid var(--border)' }}>
-                                                <span>{item.trim()}</span>
+                                                <span>{item.name} <span style={{ color: 'var(--text-dim)' }}>x{item.quantity}</span></span>
+                                                <span style={{ fontWeight: '700' }}>{(item.price * item.quantity).toLocaleString()} so'm</span>
                                             </div>
-                                        ))}
+                                        )) : <span>{selectedOrder.items}</span>}
                                     </div>
                                     <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                         <h3 style={{ fontSize: '1.1rem' }}>Jami</h3>
-                                        <h3 style={{ fontSize: '1.5rem', color: 'var(--primary)' }}>{selectedOrder.amount.toLocaleString()} so'm</h3>
+                                        <h3 style={{ fontSize: '1.5rem', color: 'var(--primary)' }}>{selectedOrder.total.toLocaleString()} so'm</h3>
                                     </div>
                                 </div>
                             </div>
@@ -180,7 +201,7 @@ const OrdersBoard = () => {
 
                         {/* Actions */}
                         <div style={{ marginTop: '2rem', display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-                            {selectedOrder.status === 'new' && (
+                            {selectedOrder.status === 'pending' && (
                                 <button onClick={() => moveOrder(selectedOrder.id, 'preparing')} className="neon-btn" style={{ flex: 1, background: 'var(--warning)', color: 'white' }}>Tayyorlashni boshlash</button>
                             )}
                             {selectedOrder.status === 'preparing' && (
@@ -199,3 +220,4 @@ const OrdersBoard = () => {
 };
 
 export default OrdersBoard;
+
