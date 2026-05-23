@@ -7,7 +7,9 @@ import {
     TrendingUp,
     ArrowUpRight,
     ArrowDownRight,
-    Plus
+    Plus,
+    Package,
+    AlertTriangle
 } from 'lucide-react';
 import {
     AreaChart,
@@ -254,6 +256,20 @@ const DashboardOverview = () => {
                 </div>
             </div>
 
+            {/* Inventory Widget — full width */}
+            <div className="glass-card" style={{ padding: '1.5rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <div style={{ padding: '8px', background: 'rgba(99,102,241,0.1)', borderRadius: '10px', color: '#6366f1' }}>
+                            <Package size={20} />
+                        </div>
+                        <h3 style={{ fontSize: '1.2rem' }}>Ombor holati</h3>
+                    </div>
+                    <button onClick={() => navigate('/inventory')} style={{ color: 'var(--primary)', background: 'none', border: 'none', fontWeight: '700', cursor: 'pointer', fontSize: '0.9rem' }}>Barchasi →</button>
+                </div>
+                <InventoryWidget />
+            </div>
+
             <style>{`
                 @keyframes wave {
                     0% { transform: rotate(0deg); }
@@ -412,6 +428,104 @@ const RecentOrders = () => {
                     </span>
                 </div>
             ))}
+        </div>
+    );
+};
+
+// ── Inventory Widget ────────────────────────────────────────────────────────
+const InventoryWidget = () => {
+    const [items, setItems] = useState([]);
+
+    const load = () => {
+        const saved = JSON.parse(localStorage.getItem('fastfood_inventory') || '[]');
+        setItems(saved);
+    };
+
+    useEffect(() => {
+        load();
+        window.addEventListener('inventoryUpdated', load);
+        window.addEventListener('storage', load);
+        return () => {
+            window.removeEventListener('inventoryUpdated', load);
+            window.removeEventListener('storage', load);
+        };
+    }, []);
+
+    if (items.length === 0) return (
+        <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-dim)' }}>
+            <Package size={36} style={{ opacity: 0.3, marginBottom: '10px' }} />
+            <p style={{ fontSize: '0.9rem' }}>Ombor bo'sh. <a href="/inventory" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: '700' }}>Mahsulot qo'shing</a></p>
+        </div>
+    );
+
+    const getColor = (item) => {
+        if (item.status === 'Critical') return { bar: '#ef4444', bg: 'rgba(239,68,68,0.08)', text: '#ef4444' };
+        if (item.status === 'Low Stock') return { bar: '#f59e0b', bg: 'rgba(245,158,11,0.08)', text: '#f59e0b' };
+        return { bar: '#10b981', bg: 'rgba(16,185,129,0.08)', text: '#10b981' };
+    };
+
+    const getLabel = (item) => {
+        if (item.status === 'Critical') return '⚠️ Tanqis';
+        if (item.status === 'Low Stock') return '⚡ Kam qoldi';
+        return '✅ Yetarli';
+    };
+
+    const maxStock = Math.max(...items.map(i => Math.max(i.stock, i.min, 1)));
+
+    return (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '12px' }}>
+            {items.map(item => {
+                const c = getColor(item);
+                const pct = Math.min(100, Math.round((item.stock / Math.max(item.min * 2, item.stock, 1)) * 100));
+                return (
+                    <div key={item.id} style={{
+                        padding: '14px 16px',
+                        background: c.bg,
+                        borderRadius: '16px',
+                        border: `1px solid ${c.bar}30`,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '10px'
+                    }}>
+                        {/* Header */}
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <div style={{ padding: '6px', background: `${c.bar}18`, borderRadius: '8px', color: c.bar }}>
+                                    <Package size={15} />
+                                </div>
+                                <span style={{ fontWeight: '700', fontSize: '0.9rem' }}>{item.item}</span>
+                            </div>
+                            <span style={{ fontSize: '0.72rem', fontWeight: '700', color: c.text, background: `${c.bar}18`, padding: '3px 8px', borderRadius: '10px' }}>
+                                {getLabel(item)}
+                            </span>
+                        </div>
+
+                        {/* Stock bar */}
+                        <div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
+                                <span style={{ fontSize: '0.78rem', color: 'var(--text-dim)', fontWeight: '600' }}>
+                                    Joriy: <strong style={{ color: c.text }}>{item.stock} {item.unit}</strong>
+                                </span>
+                                <span style={{ fontSize: '0.78rem', color: 'var(--text-dim)' }}>
+                                    Min: {item.min} {item.unit}
+                                </span>
+                            </div>
+                            <div style={{ height: '6px', background: 'rgba(0,0,0,0.06)', borderRadius: '4px', overflow: 'hidden' }}>
+                                <div style={{
+                                    height: '100%',
+                                    width: `${pct}%`,
+                                    background: c.bar,
+                                    borderRadius: '4px',
+                                    transition: 'width 0.5s ease'
+                                }} />
+                            </div>
+                            <div style={{ textAlign: 'right', fontSize: '0.72rem', color: 'var(--text-dim)', marginTop: '4px' }}>
+                                {pct}%
+                            </div>
+                        </div>
+                    </div>
+                );
+            })}
         </div>
     );
 };
