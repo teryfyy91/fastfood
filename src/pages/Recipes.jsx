@@ -268,113 +268,121 @@ const Recipes = () => {
                         position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
                         background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(8px)',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        zIndex: 2000, padding: '20px'
+                        zIndex: 2000
                     }}>
-                        <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }}
+                        <motion.div initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }}
+                            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
                             style={{
-                                background: 'white', width: '100%', maxWidth: '650px',
-                                borderRadius: '24px', padding: '2rem',
-                                boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)',
-                                maxHeight: '90vh', overflowY: 'auto'
+                                background: 'white',
+                                width: '100vw',
+                                height: '100vh',
+                                padding: '40px',
+                                overflowY: 'auto',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center'
                             }}>
-                            {/* Modal Header */}
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                                <h2 style={{ fontSize: '1.4rem', fontWeight: '800' }}>Yangi retsept qo'shish</h2>
-                                <button onClick={() => setShowModal(false)}
-                                    style={{ background: 'var(--bg-body)', border: 'none', borderRadius: '50%', padding: '8px', cursor: 'pointer' }}>
-                                    <X size={20} />
-                                </button>
-                            </div>
-
-                            <form onSubmit={handleSaveRecipe} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                                {/* Dish Name */}
-                                <div>
-                                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: '700', color: 'var(--text-dim)', marginBottom: '8px' }}>
-                                        TAOM NOMI
-                                    </label>
-                                    <input
-                                        required
-                                        type="text"
-                                        placeholder="Masalan: Hot-Dog, Lavash, Burger..."
-                                        value={dishName}
-                                        onChange={e => setDishName(e.target.value)}
-                                        style={inputStyle}
-                                    />
+                            {/* Modal Content Wrapper to control width */}
+                            <div style={{ width: '100%', maxWidth: '1200px' }}>
+                                {/* Modal Header */}
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem' }}>
+                                    <h2 style={{ fontSize: '2rem', fontWeight: '900', letterSpacing: '-0.5px' }}>Yangi retsept qo'shish</h2>
+                                    <button onClick={() => setShowModal(false)}
+                                        style={{ background: 'var(--bg-body)', border: 'none', borderRadius: '15px', padding: '12px', cursor: 'pointer', display: 'flex' }}>
+                                        <X size={28} />
+                                    </button>
                                 </div>
 
-                                {/* Ingredients */}
-                                <div>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                                        <label style={{ fontSize: '0.8rem', fontWeight: '700', color: 'var(--text-dim)' }}>
-                                            MASALLIQLAR
+                                <form onSubmit={handleSaveRecipe} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                                    {/* Dish Name */}
+                                    <div>
+                                        <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: '700', color: 'var(--text-dim)', marginBottom: '8px' }}>
+                                            TAOM NOMI
                                         </label>
-                                        <button type="button" onClick={addIngredientRow}
-                                            style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'var(--bg-body)', border: '1px solid var(--primary)', borderRadius: '8px', padding: '6px 12px', cursor: 'pointer', color: 'var(--primary)', fontWeight: '600', fontSize: '0.85rem' }}>
-                                            <Plus size={14} /> Masalliq qo'shish
-                                        </button>
+                                        <input
+                                            required
+                                            type="text"
+                                            placeholder="Masalan: Hot-Dog, Lavash, Burger..."
+                                            value={dishName}
+                                            onChange={e => setDishName(e.target.value)}
+                                            style={inputStyle}
+                                        />
                                     </div>
 
-                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                                        {ingredients.map((ing, idx) => {
-                                            const selectedInv = inventory.find(inv => String(inv.id) === String(ing.inventoryId));
-                                            return (
-                                                <div key={idx} style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr auto', gap: '8px', alignItems: 'center' }}>
-                                                    {/* Select from inventory or type */}
-                                                    <div>
-                                                        {inventory.length > 0 ? (
-                                                            <select
-                                                                value={ing.inventoryId}
-                                                                onChange={e => updateIngredient(idx, 'inventoryId', e.target.value)}
-                                                                style={inputStyle}
-                                                            >
-                                                                <option value="">— Tanlang —</option>
-                                                                {inventory.map(inv => (
-                                                                    <option key={inv.id} value={inv.id}>
-                                                                        {inv.item} ({inv.stock} {inv.unit})
-                                                                    </option>
-                                                                ))}
-                                                                <option value="__custom__">✏️ O'zim yozaman</option>
-                                                            </select>
-                                                        ) : (
-                                                            <input type="text" placeholder="Masalliq nomi"
-                                                                value={ing.customName}
-                                                                onChange={e => updateIngredient(idx, 'customName', e.target.value)}
-                                                                style={inputStyle} />
-                                                        )}
-                                                        {ing.inventoryId === '__custom__' && (
-                                                            <input type="text" placeholder="Masalliq nomini yozing"
-                                                                value={ing.customName}
-                                                                onChange={e => updateIngredient(idx, 'customName', e.target.value)}
-                                                                style={{ ...inputStyle, marginTop: '8px' }} />
-                                                        )}
+                                    {/* Ingredients */}
+                                    <div>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                                            <label style={{ fontSize: '0.8rem', fontWeight: '700', color: 'var(--text-dim)' }}>
+                                                MASALLIQLAR
+                                            </label>
+                                            <button type="button" onClick={addIngredientRow}
+                                                style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'var(--bg-body)', border: '1px solid var(--primary)', borderRadius: '8px', padding: '6px 12px', cursor: 'pointer', color: 'var(--primary)', fontWeight: '600', fontSize: '0.85rem' }}>
+                                                <Plus size={14} /> Masalliq qo'shish
+                                            </button>
+                                        </div>
+
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                                            {ingredients.map((ing, idx) => {
+                                                const selectedInv = inventory.find(inv => String(inv.id) === String(ing.inventoryId));
+                                                return (
+                                                    <div key={idx} style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr auto', gap: '8px', alignItems: 'center' }}>
+                                                        {/* Select from inventory or type */}
+                                                        <div>
+                                                            {inventory.length > 0 ? (
+                                                                <select
+                                                                    value={ing.inventoryId}
+                                                                    onChange={e => updateIngredient(idx, 'inventoryId', e.target.value)}
+                                                                    style={inputStyle}
+                                                                >
+                                                                    <option value="">— Tanlang —</option>
+                                                                    {inventory.map(inv => (
+                                                                        <option key={inv.id} value={inv.id}>
+                                                                            {inv.item} ({inv.stock} {inv.unit})
+                                                                        </option>
+                                                                    ))}
+                                                                    <option value="__custom__">✏️ O'zim yozaman</option>
+                                                                </select>
+                                                            ) : (
+                                                                <input type="text" placeholder="Masalliq nomi"
+                                                                    value={ing.customName}
+                                                                    onChange={e => updateIngredient(idx, 'customName', e.target.value)}
+                                                                    style={inputStyle} />
+                                                            )}
+                                                            {ing.inventoryId === '__custom__' && (
+                                                                <input type="text" placeholder="Masalliq nomini yozing"
+                                                                    value={ing.customName}
+                                                                    onChange={e => updateIngredient(idx, 'customName', e.target.value)}
+                                                                    style={{ ...inputStyle, marginTop: '8px' }} />
+                                                            )}
+                                                        </div>
+                                                        {/* Quantity */}
+                                                        <input type="number" placeholder="Miqdor" min="0.01" step="0.01"
+                                                            value={ing.qty}
+                                                            onChange={e => updateIngredient(idx, 'qty', e.target.value)}
+                                                            style={inputStyle} required />
+                                                        {/* Unit */}
+                                                        <input type="text" placeholder="Birlik"
+                                                            value={ing.unit}
+                                                            onChange={e => updateIngredient(idx, 'unit', e.target.value)}
+                                                            style={inputStyle}
+                                                            readOnly={!!selectedInv && ing.inventoryId !== '__custom__'}
+                                                        />
+                                                        {/* Remove */}
+                                                        <button type="button" onClick={() => removeIngredientRow(idx)}
+                                                            style={{ background: 'rgba(239,68,68,0.1)', border: 'none', borderRadius: '8px', padding: '10px', cursor: 'pointer', color: 'var(--danger)' }}>
+                                                            <X size={16} />
+                                                        </button>
                                                     </div>
-                                                    {/* Quantity */}
-                                                    <input type="number" placeholder="Miqdor" min="0.01" step="0.01"
-                                                        value={ing.qty}
-                                                        onChange={e => updateIngredient(idx, 'qty', e.target.value)}
-                                                        style={inputStyle} required />
-                                                    {/* Unit */}
-                                                    <input type="text" placeholder="Birlik"
-                                                        value={ing.unit}
-                                                        onChange={e => updateIngredient(idx, 'unit', e.target.value)}
-                                                        style={inputStyle}
-                                                        readOnly={!!selectedInv && ing.inventoryId !== '__custom__'}
-                                                    />
-                                                    {/* Remove */}
-                                                    <button type="button" onClick={() => removeIngredientRow(idx)}
-                                                        style={{ background: 'rgba(239,68,68,0.1)', border: 'none', borderRadius: '8px', padding: '10px', cursor: 'pointer', color: 'var(--danger)' }}>
-                                                        <X size={16} />
-                                                    </button>
-                                                </div>
-                                            );
-                                        })}
+                                                );
+                                            })}
+                                        </div>
                                     </div>
-                                </div>
 
-                                <button type="submit" className="neon-btn" style={{ width: '100%', padding: '14px', marginTop: '0.5rem' }}>
-                                    Retseptni saqlash
-                                </button>
-                            </form>
+                                    <button type="submit" className="neon-btn" style={{ width: '100%', padding: '14px', marginTop: '0.5rem' }}>
+                                        Retseptni saqlash
+                                    </button>
+                                </form>
+                            </div>
                         </motion.div>
                     </div>
                 )}
