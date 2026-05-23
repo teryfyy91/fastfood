@@ -341,6 +341,25 @@ const TopProducts = () => {
 };
 
 // ── Recent Activity component ───────────────────────────────────────────────
+
+// Helper: short readable order number (last 4 digits of timestamp part)
+const shortId = (id) => {
+    const part = id.split('-')[1] || id;
+    return '#' + part.slice(-4);
+};
+
+// Helper: human-readable time ago
+const timeAgo = (timestamp) => {
+    const diff = Date.now() - new Date(timestamp).getTime();
+    const mins = Math.floor(diff / 60000);
+    if (mins < 1) return 'Hozir';
+    if (mins < 60) return `${mins}m oldin`;
+    const hrs = Math.floor(mins / 60);
+    if (hrs < 24) return `${hrs}s oldin`;
+    const days = Math.floor(hrs / 24);
+    return `${days}k oldin`;
+};
+
 const RecentActivity = () => {
     const [orders, setOrders] = useState([]);
 
@@ -360,7 +379,7 @@ const RecentActivity = () => {
     }, []);
 
     const statusInfo = {
-        pending: { label: 'Yangi', color: 'var(--primary)' },
+        pending: { label: 'Yangi buyurtma', color: 'var(--primary)' },
         preparing: { label: 'Tayyorlanmoqda', color: 'var(--warning)' },
         ready: { label: 'Tayyor', color: 'var(--success)' },
         completed: { label: 'Yakunlangan', color: 'var(--text-dim)' }
@@ -374,15 +393,16 @@ const RecentActivity = () => {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
             {orders.map(o => {
                 const info = statusInfo[o.status] || statusInfo.pending;
-                const elapsed = Math.floor((Date.now() - new Date(o.timestamp).getTime()) / 60000);
                 return (
                     <div key={o.id} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                         <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: info.color, flexShrink: 0 }} />
                         <div style={{ flex: 1 }}>
-                            <p style={{ fontSize: '0.85rem', fontWeight: '700' }}>Buyurtma #{o.id.split('-')[1]}</p>
-                            <p style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>{info.label}</p>
+                            <p style={{ fontSize: '0.85rem', fontWeight: '700' }}>Buyurtma {shortId(o.id)}</p>
+                            <p style={{ fontSize: '0.75rem', color: info.color }}>{info.label}</p>
                         </div>
-                        <span style={{ fontSize: '0.75rem', color: 'var(--text-dim)', fontWeight: '600' }}>{elapsed}m oldin</span>
+                        <span style={{ fontSize: '0.75rem', color: 'var(--text-dim)', fontWeight: '600', whiteSpace: 'nowrap' }}>
+                            {timeAgo(o.timestamp)}
+                        </span>
                     </div>
                 );
             })}
@@ -413,17 +433,30 @@ const RecentOrders = () => {
         <p style={{ color: 'var(--text-dim)', fontSize: '0.9rem', textAlign: 'center' }}>Buyurtmalar yo'q</p>
     );
 
+    const statusColors = {
+        pending: '#6366f1',
+        preparing: 'var(--warning)',
+        ready: 'var(--success)',
+        completed: 'var(--text-dim)'
+    };
+    const statusLabels = {
+        pending: 'Yangi',
+        preparing: 'Tayyorlanmoqda',
+        ready: 'Tayyor',
+        completed: 'Yakunlangan'
+    };
+
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             {orders.map(o => (
                 <div key={o.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 14px', background: 'var(--bg-body)', borderRadius: '14px' }}>
                     <div>
-                        <p style={{ fontWeight: '700', fontSize: '0.9rem' }}>#{o.id.split('-')[1]}</p>
-                        <p style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>
-                            {Array.isArray(o.items) ? `${o.items.length} ta mahsulot` : '—'}
+                        <p style={{ fontWeight: '700', fontSize: '0.9rem' }}>Buyurtma {shortId(o.id)}</p>
+                        <p style={{ fontSize: '0.75rem', color: statusColors[o.status] || 'var(--text-dim)', marginTop: '2px' }}>
+                            {statusLabels[o.status] || '—'} &bull; {timeAgo(o.timestamp)}
                         </p>
                     </div>
-                    <span style={{ fontWeight: '800', color: 'var(--primary)', fontSize: '0.9rem' }}>
+                    <span style={{ fontWeight: '800', color: 'var(--primary)', fontSize: '0.9rem', whiteSpace: 'nowrap' }}>
                         {o.total?.toLocaleString()} so'm
                     </span>
                 </div>
